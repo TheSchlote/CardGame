@@ -63,9 +63,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BattleSystem.cs" />
-    <Compile Include="Assets\Scripts\Card.cs" />
-    <Compile Include="Assets\Scripts\CardDisplay.cs" />
+    <Compile Include="Assets\Scripts\BattleSystem.cs" />
+    <Compile Include="Assets\Scripts\Cards\Card.cs" />
+    <Compile Include="Assets\Scripts\Cards\CardDisplay.cs" />
+    <Compile Include="Assets\Scripts\Cards\CardDisplayProperties.cs" />
+    <Compile Include="Assets\Scripts\Cards\CardProperties.cs" />
+    <Compile Include="Assets\Scripts\Cards\CardType.cs" />
+    <Compile Include="Assets\Scripts\Cards\CreatureCard.cs" />
+    <Compile Include="Assets\Scripts\Cards\Element.cs" />
+    <Compile Include="Assets\Scripts\Cards\ElementArt.cs" />
+    <Compile Include="Assets\Scripts\Cards\ElementInt.cs" />
+    <Compile Include="Assets\Scripts\Cards\SpellCard.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\Settings.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity/Repos/CardGame/CardGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
