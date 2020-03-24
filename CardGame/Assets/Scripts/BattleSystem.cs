@@ -8,14 +8,15 @@ public class BattleSystem : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
-    Card joeyCard;
+
+    public Transform playerHand;
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
 
     public BattleState state;
 
-    public bool enemyFirst = false;
 
+    public bool enemyFirst = false;
     private void OnGUI()
     {
         if (state == BattleState.WON || state == BattleState.LOST)
@@ -34,13 +35,9 @@ public class BattleSystem : MonoBehaviour
         //Who goes first?
         StartCoroutine(WaitForThisLong(2.0f));
         //Both Players Draw...
-
-        DrawPhase();
-        StartCoroutine(WaitForThisLong(2.0f));
-        SummonPhase();
-
+        StartCoroutine(DrawPhase());
     }
-    void DrawPhase()
+    IEnumerator DrawPhase()
     {
         state = BattleState.DRAWPHASE;
 
@@ -58,18 +55,42 @@ public class BattleSystem : MonoBehaviour
         
         foreach(int index in cardsToDraw)
         {
-            Hand.hand.Add(Deck.deck[index]);
+            //Add Cards to hand
+            Hand.hand.Add(index, Deck.deck[index]);
 
             //And Remove that card so we dont draw it again.
             Deck.deck.Remove(index);
         }
 
-        StartCoroutine(WaitForThisLong(2.0f));
+        //After Cards are drawn put them in your hand.
+        GameObject[] gameObjects = new GameObject[Hand.hand.Count];
+
+
+        //foreach (KeyValuePair<int, Card> card in Hand.hand)
+        //{
+        //    playerPrefab.GetComponent<CardDisplay>().card = card.Value;
+        //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
+        //}
+
+        //for (int i = 0; i < Hand.hand.Count; i++)
+        //{
+        //    playerPrefab.GetComponent<CardDisplay>().card = Hand.hand.;
+        //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
+        //}
+
+        
+
+
+        //StartCoroutine(WaitForThisLong(2.0f));
         //After drawing total up friend points
-        foreach (Card cardinHand in Hand.hand)
+        foreach (KeyValuePair<int, Card> cardinHand in Hand.hand)
         {
-            ArenaManager.totalJoeyPoints += cardinHand.points;
+            ArenaManager.totalJoeyPoints += cardinHand.Value.points;
         }
+
+        yield return new WaitForSeconds(2.0f);
+
+        SummonPhase();
     }
 
 
@@ -114,19 +135,24 @@ public class BattleSystem : MonoBehaviour
 
 
         //For now play all cards in hand. Eventually will be player chosen.
-        int i = 0;
-        foreach (Card card in Hand.hand)
+        
+        foreach (KeyValuePair<int, Card> card in Hand.hand)
         {
-            Hand.cardsToPlay.Add(i, card);
-            i++;
+            for (int i = 0; i < Hand.hand.Count; i++)
+            {
+                Hand.cardsToPlay.Add(i, card.Value);
+                Hand.hand.Remove(i);
+            }
         }
 
         GameObject[] gameObjects = new GameObject[Hand.cardsToPlay.Count];
 
         foreach (KeyValuePair<int, Card> card in Hand.cardsToPlay)
         {
+            int i = 0;
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
-            gameObjects[card.Key] = Instantiate(playerPrefab, playerBattleStation);
+            gameObjects[i] = Instantiate(playerPrefab, playerBattleStation);
+            i++;
         }
             
 
