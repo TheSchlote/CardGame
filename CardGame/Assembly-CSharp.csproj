@@ -63,12 +63,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ArenaManager.cs" />
     <Compile Include="Assets\Scripts\BattleSystem.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
     <Compile Include="Assets\Scripts\CardDisplay.cs" />
     <Compile Include="Assets\Scripts\DisplayHUD.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\TestScript.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity/Repos/CardGame/CardGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
