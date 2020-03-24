@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ArenaManager : MonoBehaviour
 {
+
     public Text txttotalPlayerATK;
     public Text txttotalPlayerHP;
     public Text txttotalEnemyATK;
@@ -18,8 +19,8 @@ public class ArenaManager : MonoBehaviour
     public Toggle enemy1st;
     public Toggle enemy2nd;
 
-    Unit playerUnit;
-    Unit enemyUnit;
+    Card playerUnit;
+    Card enemyUnit;
 
     public static int totalPlayerATK = 0;
     public static int totalPlayerHP = 1;
@@ -31,6 +32,8 @@ public class ArenaManager : MonoBehaviour
     public static bool enemy1stWin = false;
     public static bool enemy2ndWin = false;
 
+    public static int totalNickPoints = 0;
+    public static int totalJoeyPoints = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -50,5 +53,8 @@ public class ArenaManager : MonoBehaviour
         player2nd.isOn = player2ndWin;
         enemy1st.isOn = enemy1stWin;
         enemy1st.isOn = enemy2ndWin;
+
+        txttotalNickPoints.text = totalNickPoints.ToString("D2");
+        txttotalJoeyPoints.text = totalJoeyPoints.ToString("D2");
     }
 }
