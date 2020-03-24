@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86c1b1833be69b54ea10349c9bd4363f, type: 3}
-  m_Name: Nick
+  m_Name: Robert
   m_EditorClassIdentifier: 
-  cardName: Nick
-  cardDescription: Basic Nick
-  artWork: {fileID: 21300000, guid: 36987cb7c5adba9489e4768a0e332976, type: 3}
+  cardName: Robert
+  cardDescription: Basic Robert
+  artWork: {fileID: 21300000, guid: 4754eeeeaf8d85a4cba29466aaabfbfa, type: 3}
   points: 1
-  ATK: 1
-  HP: 5
+  ATK: 4
+  HP: 4
