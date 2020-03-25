@@ -166,7 +166,10 @@ public class BattleSystem : MonoBehaviour
         else
         {
             //Player Attacks First
+
+            //Damage is dealt
             PlayerAttack();
+
             //Wait
             StartCoroutine(WaitForThisLong(2.0f));
             EnemyAttack();    
@@ -176,6 +179,8 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(WaitForThisLong(2.0f));
         WhoWon();
     }
+
+
 
     void EnemyAttack()
     {
