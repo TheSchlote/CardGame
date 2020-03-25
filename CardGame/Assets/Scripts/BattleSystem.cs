@@ -32,7 +32,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.START;
         //Who goes first?
-        StartCoroutine(WaitForThisLong(2.0f));
+        
         //Both Players Draw...
         StartCoroutine(DrawPhase());
     }
@@ -62,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         //After Cards are drawn put them in your hand.
-        GameObject[] gameObjects = new GameObject[Hand.hand.Count];
+        //GameObject[] gameObjects = new GameObject[Hand.hand.Count];
 
         //foreach (KeyValuePair<int, Card> card in Hand.hand)
         //{
@@ -70,14 +70,15 @@ public class BattleSystem : MonoBehaviour
         //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
         //}
 
-        //StartCoroutine(WaitForThisLong(2.0f));
+        
         //After drawing total up friend points
         foreach (KeyValuePair<int, Card> cardinHand in Hand.hand)
         {
             ArenaManager.totalJoeyPoints += cardinHand.Value.points;
+            yield return new WaitForSeconds(0.5f);
         }
 
-        yield return new WaitForSeconds(2.0f);
+        
 
         SummonPhase();
     }
@@ -95,28 +96,16 @@ public class BattleSystem : MonoBehaviour
         //Enemy AI plays all available cards.
         //Animation
 
-        SummonCards();
+        StartCoroutine(SummonCards());
 
-        //Total up ATK and HP
-        for (int i = 0; i < playerBattleStation.childCount; i++)
-        {
-             ArenaManager.totalPlayerATK += playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card.ATK;
-             ArenaManager.totalPlayerHP += playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
-            //this part should really happen during draw phase but this is fine.
-        }
-
-        for (int i = 0; i < enemyBattleStation.childCount; i++)
-        {
-            ArenaManager.totalEnemyATK += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.ATK;
-            ArenaManager.totalEnemyHP += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
-            ArenaManager.totalNickPoints += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.points;
-        }
+        
+        
 
         //BuffPhase should be next. But for now lets just attack.
-        StartCoroutine(WaitForThisLong(2.0f));
-        BattlePhase();
+        
+        
     }
-    void SummonCards()
+    IEnumerator SummonCards()
     {
         //I'll need to pass through a list of chose cards here.
 
@@ -139,16 +128,40 @@ public class BattleSystem : MonoBehaviour
         {
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
             //I think this will work it will just fill the cards backwards?
+            yield return new WaitForSeconds(1f);
             gameObjects[joey] = Instantiate(playerPrefab, playerBattleStation);
+            Debug.Log("Card Slot " + joey + " filled");
             joey--;
         }
 
-
+        yield return new WaitForSeconds(1f);
         GameObject EnemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         
         Debug.Log("Battle is set up.");
 
-        //WaitForSeconds(2.0f);
+        StartCoroutine(AddPoints());
+    }
+    IEnumerator AddPoints()
+    {
+        //Total up ATK and HP
+        for (int i = 0; i < playerBattleStation.childCount; i++)
+        {
+            ArenaManager.totalPlayerATK += playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card.ATK;
+            ArenaManager.totalPlayerHP += playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        for (int i = 0; i < enemyBattleStation.childCount; i++)
+        {
+            ArenaManager.totalEnemyATK += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.ATK;
+            ArenaManager.totalEnemyHP += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
+            yield return new WaitForSeconds(0.5f);
+
+            // this part should really happen after enemy draw
+            ArenaManager.totalNickPoints += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.points;
+        }
+
+        BattlePhase();
     }
 
     void BattlePhase()
@@ -160,7 +173,7 @@ public class BattleSystem : MonoBehaviour
             //Enemy attacks First
             EnemyAttack();
             //Wait
-            StartCoroutine(WaitForThisLong(2.0f));
+            
             PlayerAttack();
         }
         else
@@ -171,12 +184,12 @@ public class BattleSystem : MonoBehaviour
             PlayerAttack();
 
             //Wait
-            StartCoroutine(WaitForThisLong(2.0f));
+            
             EnemyAttack();    
         }
 
         //End of the battlephase
-        StartCoroutine(WaitForThisLong(2.0f));
+        
         WhoWon();
     }
 
@@ -228,9 +241,5 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForThisLong(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-    }
 
 }
