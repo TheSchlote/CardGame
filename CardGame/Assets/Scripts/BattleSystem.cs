@@ -15,7 +15,6 @@ public class BattleSystem : MonoBehaviour
 
     public BattleState state;
 
-
     public bool enemyFirst = false;
     private void OnGUI()
     {
@@ -65,21 +64,11 @@ public class BattleSystem : MonoBehaviour
         //After Cards are drawn put them in your hand.
         GameObject[] gameObjects = new GameObject[Hand.hand.Count];
 
-
         //foreach (KeyValuePair<int, Card> card in Hand.hand)
         //{
         //    playerPrefab.GetComponent<CardDisplay>().card = card.Value;
         //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
         //}
-
-        //for (int i = 0; i < Hand.hand.Count; i++)
-        //{
-        //    playerPrefab.GetComponent<CardDisplay>().card = Hand.hand.;
-        //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
-        //}
-
-        
-
 
         //StartCoroutine(WaitForThisLong(2.0f));
         //After drawing total up friend points
@@ -135,26 +124,25 @@ public class BattleSystem : MonoBehaviour
 
 
         //For now play all cards in hand. Eventually will be player chosen.
-        
         foreach (KeyValuePair<int, Card> card in Hand.hand)
         {
-            for (int i = 0; i < Hand.hand.Count; i++)
-            {
-                Hand.cardsToPlay.Add(i, card.Value);
-                Hand.hand.Remove(i);
-            }
+            Hand.cardsToPlay.Add(card.Key, card.Value);
         }
+        //Since we played all of our cards our hand is empty...
+        Hand.hand.Clear();
+
+        //Put the cards on the fields.
 
         GameObject[] gameObjects = new GameObject[Hand.cardsToPlay.Count];
-
+        int joey = Hand.cardsToPlay.Count - 1;
         foreach (KeyValuePair<int, Card> card in Hand.cardsToPlay)
         {
-            int i = 0;
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
-            gameObjects[i] = Instantiate(playerPrefab, playerBattleStation);
-            i++;
+            //I think this will work it will just fill the cards backwards?
+            gameObjects[joey] = Instantiate(playerPrefab, playerBattleStation);
+            joey--;
         }
-            
+
 
         GameObject EnemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         

@@ -14,3 +14,12 @@ public class Card : ScriptableObject
     public int HP;
 
 }
+
+//public class CardPoint
+//{
+//    public int NickPoint;
+//    public int JoeyPoint;
+//    public int JordanPoint;
+//    public int RobertPoint;
+//    public int LoganPoint;
+//}
