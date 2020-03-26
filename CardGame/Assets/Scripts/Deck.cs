@@ -8,7 +8,7 @@ public class Deck : MonoBehaviour
     //public static List<Card> deck = new List<Card>();
     public static Dictionary<int, Card> deck = new Dictionary<int, Card>();
     public List<Card> cards = new List<Card>();
-
+    public int  numberOfCardsinDeck = deck.Count;
     private void Awake()
     {
         int i = 0;
@@ -31,5 +31,29 @@ public class Deck : MonoBehaviour
     void Update()
     {
         //When we draw cards lets take them from here.
+    }
+
+    public void AddCardToDeck(Card card)
+    {
+        numberOfCardsinDeck = deck.Count;
+
+        if (!deck.ContainsKey(numberOfCardsinDeck))
+        {
+            
+            deck.Add(numberOfCardsinDeck, card);
+        }
+        else
+        {
+            Debug.Log("Uh oh, I added 1");
+            while (deck.ContainsKey(numberOfCardsinDeck))
+            {
+                numberOfCardsinDeck++;
+                Debug.Log("Uh oh, I added 1 again");
+            }
+            deck.Add(numberOfCardsinDeck, card);
+
+        }
+
+        
     }
 }
