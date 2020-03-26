@@ -22,4 +22,13 @@ public class GameMangaer : MonoBehaviour
         SceneManager.LoadScene("TestBattleScene");
     }
 
+    public void StartDeckBuilder()
+    {
+        SceneManager.LoadScene("DeckBuilder");
+    }
+
+    public void StartMain()
+    {
+        SceneManager.LoadScene("Main");
+    }
 }
