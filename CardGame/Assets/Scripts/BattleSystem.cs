@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public enum BattleState { START,DRAWPHASE, ABILITYPHASE, SUMMONPHASE, BUFFPHASE, BATTLEPHASE, PLAYERTURN, ENEMYTURN, WON, LOST}
@@ -13,16 +14,20 @@ public class BattleSystem : MonoBehaviour
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
 
+    public static Dictionary<int, Card> deck = new Dictionary<int, Card>();
+
     public BattleState state;
 
     public bool enemyFirst = false;
+    bool gameOver = false;
+
     private void OnGUI()
     {
-        if (state == BattleState.WON || state == BattleState.LOST)
+        if (gameOver)
         {
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 100), state.ToString()))
             {
-                state = BattleState.START;
+                SceneManager.LoadScene("Main");
             }
         }
     }
@@ -30,12 +35,24 @@ public class BattleSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //We need a copy of our real deck to manipulate during the battle.
+        deck = Deck.deck;
+
         state = BattleState.START;
         //Who goes first?
         
         //Both Players Draw...
         StartCoroutine(DrawPhase());
     }
+    void StartRound()
+    {
+        state = BattleState.START;
+        //Who goes first?
+
+        //Both Players Draw...
+        StartCoroutine(DrawPhase());
+    }
+
     IEnumerator DrawPhase()
     {
         state = BattleState.DRAWPHASE;
@@ -46,19 +63,20 @@ public class BattleSystem : MonoBehaviour
         for (int i = 0; cardsToDraw.Count < 5; i++)
         {
             //I cant draw cards from my deck if there are none.
-            if (Deck.deck.Count < 0)
+            if (deck.Count < 0)
                 break;
+
             //Add distinct list of card indexes to draw
-            cardsToDraw.Add(Random.Range(0, Deck.deck.Count));
+            cardsToDraw.Add(Random.Range(0, deck.Count));
         }
         
         foreach(int index in cardsToDraw)
         {
             //Add Cards to hand
-            Hand.hand.Add(index, Deck.deck[index]);
+            Hand.hand.Add(index, deck[index]);
 
             //And Remove that card so we dont draw it again.
-            Deck.deck.Remove(index);
+            deck.Remove(index);
         }
 
         //After Cards are drawn put them in your hand.
@@ -168,6 +186,8 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.BATTLEPHASE;
         Debug.Log("Battle Phase...");
+
+        //Eventually I want to turn these into coroutines and run animations on attacks.
         if (enemyFirst)
         {
             //Enemy attacks First
@@ -191,6 +211,7 @@ public class BattleSystem : MonoBehaviour
         //End of the battlephase
         
         WhoWon();
+        
     }
 
 
@@ -221,10 +242,24 @@ public class BattleSystem : MonoBehaviour
             if (ArenaManager.enemy1stWin == false)
             {
                 ArenaManager.enemy1stWin = true;
+                //for (int i = 0; i < playerBattleStation.childCount; i++)
+                //{
+                //    Destroy(playerPrefab);
+                //}
+                //for (int i = 0; i < enemyBattleStation.childCount; i++)
+                //{
+                //    Destroy(enemyPrefab);
+                //}
+
+
+                //StartRound();
+
+                gameOver = true;
             }
             else
             {
                 ArenaManager.enemy2ndWin = true;
+                gameOver = true;
             }
         }
         else
@@ -233,10 +268,23 @@ public class BattleSystem : MonoBehaviour
             if (ArenaManager.player1stWin == false)
             {
                 ArenaManager.player1stWin = true;
+                //for (int i = 0; i < playerBattleStation.childCount; i++)
+                //{
+                //    Destroy(playerPrefab);
+                //}
+                //for (int i = 0; i < enemyBattleStation.childCount; i++)
+                //{
+                //    Destroy(enemyPrefab);
+                //}
+
+                //StartRound();
+
+                gameOver = true;
             }
             else
             {
                 ArenaManager.player2ndWin = true;
+                gameOver = true;
             }
         }
     }
