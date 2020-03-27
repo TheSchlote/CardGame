@@ -9,15 +9,6 @@ public class Deck : MonoBehaviour
     public static Dictionary<int, Card> deck = new Dictionary<int, Card>();
     public List<Card> cards = new List<Card>();
     public int  numberOfCardsinDeck = deck.Count;
-    private void Awake()
-    {
-        int i = 0;
-        foreach(Card card in cards)
-        {
-            deck.Add(i, card);
-                i++;
-        }
-    }
 
 
     // Start is called before the first frame update

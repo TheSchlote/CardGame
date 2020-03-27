@@ -2,31 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public enum BattleState { START,DRAWPHASE, ABILITYPHASE, SUMMONPHASE, BUFFPHASE, BATTLEPHASE, PLAYERTURN, ENEMYTURN, WON, LOST}
 public class BattleSystem : MonoBehaviour
 {
+    public ArenaManager MyArena;
+    public Hand MyHand;
+
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
-
+    public GameObject MyHandWindow;
+    
     public Transform playerHand;
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
 
+    //We need a new copy of our deck to manipulate
+    static Dictionary<int, Card> deck = new Dictionary<int, Card>();
+
     public BattleState state;
 
     public bool enemyFirst = false;
+
+    
     private void OnGUI()
     {
-        if (state == BattleState.WON || state == BattleState.LOST)
+        if (ArenaManager.player2ndWin == true || ArenaManager.enemy2ndWin == true)
         {
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 100), state.ToString()))
             {
+                ResetRound();
+                MyArena.ResetArena();
                 SceneManager.LoadScene("Main");
             }
         }
     }
-
+    private void Awake()
+    {
+        MyHandWindow.SetActive(false);
+        deck = new Dictionary<int, Card>(Deck.deck);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -36,51 +52,24 @@ public class BattleSystem : MonoBehaviour
         //Both Players Draw...
         StartCoroutine(DrawPhase());
     }
+
+    void NewRound()
+    {
+        state = BattleState.START;
+        //Who goes first?
+
+        //Both Players Draw...
+        StartCoroutine(DrawPhase());
+    }
+
     IEnumerator DrawPhase()
     {
+        yield return new WaitForSeconds(0.5f);
         state = BattleState.DRAWPHASE;
 
-        //Im using a HashSet so I dont draw duplicate cards
-        HashSet<int> cardsToDraw = new HashSet<int>();
-        //Randomly Draw 5 card.
-        for (int i = 0; cardsToDraw.Count < 5; i++)
-        {
-            //I cant draw cards from my deck if there are none.
-            if (Deck.deck.Count < 0)
-                break;
-            //Add distinct list of card indexes to draw
-            cardsToDraw.Add(Random.Range(0, Deck.deck.Count));
-        }
-        
-        foreach(int index in cardsToDraw)
-        {
-            //Add Cards to hand
-            Hand.hand.Add(index, Deck.deck[index]);
+        //during the DrawPhase we always want to draw 5
+        StartCoroutine(DrawCardsFromDeck(5));
 
-            //And Remove that card so we dont draw it again.
-            Deck.deck.Remove(index);
-        }
-
-        //After Cards are drawn put them in your hand.
-        //GameObject[] gameObjects = new GameObject[Hand.hand.Count];
-
-        //foreach (KeyValuePair<int, Card> card in Hand.hand)
-        //{
-        //    playerPrefab.GetComponent<CardDisplay>().card = card.Value;
-        //    gameObjects[i] = Instantiate(playerPrefab, playerHand);
-        //}
-
-        
-        //After drawing total up friend points
-        foreach (KeyValuePair<int, Card> cardinHand in Hand.hand)
-        {
-            ArenaManager.totalJoeyPoints += cardinHand.Value.points;
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        
-
-        SummonPhase();
     }
 
 
@@ -89,6 +78,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.SUMMONPHASE;
         Debug.Log("Select Available cards...");
 
+        MyHandWindow.SetActive(true);
 
         //When Card that has cost is selected, subtract appropriate points.
         //Confirm
@@ -96,29 +86,17 @@ public class BattleSystem : MonoBehaviour
         //Enemy AI plays all available cards.
         //Animation
 
-        StartCoroutine(SummonCards());
-
-        
-        
-
         //BuffPhase should be next. But for now lets just attack.
-        
-        
+
     }
+
+    //public void PlayCards()
+    //{
+    //    StartCoroutine(SummonCards());
+    //}
     IEnumerator SummonCards()
     {
-        //I'll need to pass through a list of chose cards here.
 
-        
-
-
-        //For now play all cards in hand. Eventually will be player chosen.
-        foreach (KeyValuePair<int, Card> card in Hand.hand)
-        {
-            Hand.cardsToPlay.Add(card.Key, card.Value);
-        }
-        //Since we played all of our cards our hand is empty...
-        Hand.hand.Clear();
 
         //Put the cards on the fields.
 
@@ -133,6 +111,8 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("Card Slot " + joey + " filled");
             joey--;
         }
+        //Theyve been played cant use them anymore
+        Hand.cardsToPlay.Clear();
 
         yield return new WaitForSeconds(1f);
         GameObject EnemyGO = Instantiate(enemyPrefab, enemyBattleStation);
@@ -221,6 +201,8 @@ public class BattleSystem : MonoBehaviour
             if (ArenaManager.enemy1stWin == false)
             {
                 ArenaManager.enemy1stWin = true;
+                ResetRound();
+                NewRound();
             }
             else
             {
@@ -233,6 +215,8 @@ public class BattleSystem : MonoBehaviour
             if (ArenaManager.player1stWin == false)
             {
                 ArenaManager.player1stWin = true;
+                ResetRound();
+                NewRound();
             }
             else
             {
@@ -241,5 +225,70 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator DrawCardsFromDeck(int drawAmount)
+    {
+        //Randomly Draw 5 card.
+        for (int i = 0; Hand.hand.Count < drawAmount; i++)
+        {
+            //I cant draw cards from my deck if there are none.
+            if (deck.Keys.Count > 0)
+            {
+                int cardindex = Random.Range(deck.Keys.Min(), deck.Keys.Max());
+                //Add distinct list of card indexes to draw
+                if (deck.ContainsKey(cardindex))
+                {
+                    //Add that card to our hand
+                    Hand.hand.Add(cardindex, deck[cardindex]);
 
+                    //And Remove that card so we dont draw it again.
+                    deck.Remove(cardindex);
+                }
+            }
+            else
+            {
+                break;
+            }
+
+        }
+        MyHandWindow.SetActive(true);
+        GameObject[] gameObjects = new GameObject[Hand.hand.Count];
+        int joey = Hand.hand.Count - 1;
+        foreach (KeyValuePair<int, Card> card in Hand.hand)
+        {
+            playerPrefab.GetComponent<CardDisplay>().card = card.Value;
+            ArenaManager.totalJoeyPoints += card.Value.points;
+            //I think this will work it will just fill the cards backwards?
+            yield return new WaitForSeconds(1f);
+            gameObjects[joey] = Instantiate(playerPrefab, playerHand);
+            Debug.Log("Hand Slot " + joey + " filled");
+            joey--;
+        }
+        MyHandWindow.SetActive(false);
+        //After drawing total up friend points
+
+
+        if(state == BattleState.DRAWPHASE)
+        {
+            SummonPhase();
+        }
+
+    }
+
+    void ResetRound()
+    {
+        MyArena.ResetArenaPoints();
+        Hand.hand.Clear();
+        foreach( Transform child in playerBattleStation.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform card in enemyBattleStation.transform)
+        {
+            Destroy(card.gameObject);
+        }
+        foreach (Transform card in playerHand.transform)
+        {
+            Destroy(card.gameObject);
+        }
+    }
 }

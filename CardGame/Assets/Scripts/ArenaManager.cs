@@ -57,4 +57,27 @@ public class ArenaManager : MonoBehaviour
         txttotalNickPoints.text = totalNickPoints.ToString("D2");
         txttotalJoeyPoints.text = totalJoeyPoints.ToString("D2");
     }
+
+    public void ResetArena()
+    {
+        totalPlayerATK = 0;
+        totalPlayerHP = 1;
+        totalEnemyATK = 0;
+        totalEnemyHP = 0;
+
+        player1stWin = false;
+        player2ndWin = false;
+        enemy1stWin = false;
+        enemy2ndWin = false;
+
+        totalNickPoints = 0;
+        totalJoeyPoints = 0;
+    }
+    public void ResetArenaPoints()
+    {
+        totalPlayerATK = 0;
+        totalPlayerHP = 1;
+        totalEnemyATK = 0;
+        totalEnemyHP = 0;
+    }
 }
