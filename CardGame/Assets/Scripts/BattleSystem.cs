@@ -106,7 +106,8 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("Card Slot " + joey + " filled");
             joey--;
         }
-        //Theyve been played cant use them anymore
+        
+        //Discard whatevers in your hand at the end of the round.
         Hand.cardsToPlay.Clear();
 
         yield return new WaitForSeconds(1f);
@@ -272,6 +273,7 @@ public class BattleSystem : MonoBehaviour
     void ResetRound()
     {
         MyArena.ResetArenaPoints();
+        MyHand.cardIndex = 0;
         Hand.hand.Clear();
         foreach( Transform child in playerBattleStation.transform)
         {
