@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\BattleSystem.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
     <Compile Include="Assets\Scripts\CardDisplay.cs" />
+    <Compile Include="Assets\Scripts\CardInfo.cs" />
     <Compile Include="Assets\Scripts\Deck.cs" />
     <Compile Include="Assets\Scripts\GameMangaer.cs" />
     <Compile Include="Assets\Scripts\Hand.cs" />

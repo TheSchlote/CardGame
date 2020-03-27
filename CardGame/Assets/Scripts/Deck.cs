@@ -44,7 +44,10 @@ public class Deck : MonoBehaviour
             deck.Add(numberOfCardsinDeck, card);
 
         }
+    }
 
-        
+    public void RemoveCardFromDeck(int cardindex)
+    {
+        deck.Remove(cardindex);
     }
 }
