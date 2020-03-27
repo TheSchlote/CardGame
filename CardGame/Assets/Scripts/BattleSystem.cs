@@ -89,11 +89,6 @@ public class BattleSystem : MonoBehaviour
         //BuffPhase should be next. But for now lets just attack.
 
     }
-
-    //public void PlayCards()
-    //{
-    //    StartCoroutine(SummonCards());
-    //}
     IEnumerator SummonCards()
     {
 

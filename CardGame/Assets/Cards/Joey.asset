@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Joey
   m_EditorClassIdentifier: 
   cardName: Joey
-  cardDescription: Basic Joey
+  cardDescription: A face only a mother could love.
   artWork: {fileID: 21300000, guid: 2fa0854199fb1f84b8a06b2595183e06, type: 3}
   points: 1
   ATK: 3

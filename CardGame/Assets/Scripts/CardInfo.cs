@@ -8,7 +8,6 @@ public class CardInfo : MonoBehaviour
     public Text nameText;
     public Text descriptionText;
     public GameObject cardObject;
-    public Button AddRemove;
 
     public GameObject CardInfoPanel;
     public PopulateAvailableCards cardGrids;
@@ -31,6 +30,8 @@ public class CardInfo : MonoBehaviour
         nameText.text = card.cardName;
         descriptionText.text = card.cardDescription;
         cardObject.GetComponent<CardDisplay>().card = card;
+        cardObject.GetComponent<CardDisplay>().artWork.sprite = card.artWork;
+        cardObject.GetComponent<CardDisplay>().statsText.text = card.ATK.ToString("D2") + "/" + card.HP.ToString("D2");
     }
 
     public void CardInfoPanelShow()

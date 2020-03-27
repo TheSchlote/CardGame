@@ -16,7 +16,19 @@ public class PopulateAvailableCards : MonoBehaviour
 
     //Animator stuff
     public Animator animator;
-    
+    private bool playAnimationForDeck = false;
+
+    private bool showMessage = false;
+    private void OnGUI()
+    {
+        if (showMessage)
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 300, 100), "You can't add anymore card to your deck."))
+            {
+                showMessage = false;
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +39,24 @@ public class PopulateAvailableCards : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //I propbably dont want both of these to run at the same time
+        //I dont want both of these to run at the same time
 
-        AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
-        //DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
+        if (playAnimationForDeck)
+        {
+            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+            if (Deck.deck.Count > 0)
+            {
+                DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
+            }
+        }
+        else
+        {
+            if (Deck.deck.Count > 0)
+            {
+                DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+            }
+            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
+        }
     }
 
     void PopulateGrids()
@@ -59,12 +85,20 @@ public class PopulateAvailableCards : MonoBehaviour
     
     public void AddCard()
     {
-        cardInfo.CardInfoPanelHide();
-        Card selectedcard = AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<CardDisplay>().card;
+        //Dont add more than 30 Cards.
+        if (Deck.deck.Count < 10)
+        {
+            cardInfo.CardInfoPanelHide();
+            Card selectedcard = AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<CardDisplay>().card;
 
-        MyDeck.AddCardToDeck(selectedcard);
-        Debug.Log(selectedcard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
-        PopulateDeckGrid(selectedcard);
+            MyDeck.AddCardToDeck(selectedcard);
+            Debug.Log(selectedcard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
+            PopulateDeckGrid(selectedcard);
+        }
+        else
+        {
+            showMessage = true;
+        }
     }
 
     public void RemoveCard()
@@ -73,7 +107,7 @@ public class PopulateAvailableCards : MonoBehaviour
         Card selectedcard = DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<CardDisplay>().card;
         MyDeck.RemoveCardFromDeck(deckCardIndex);
         Debug.Log(selectedcard + " Removed card from Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
-        PopulateDeckGrid(selectedcard);
+        RemoveCardFromDeckGrid();
 
     }
 
@@ -86,9 +120,12 @@ public class PopulateAvailableCards : MonoBehaviour
 
     public void SelectDeckCard()
     {
-        Card selectedcard = DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<CardDisplay>().card;
-        cardInfo.CardInfoPanelShow();
-        cardInfo.ShowCardInfo(selectedcard);
+        if (Deck.deck.Count > 0)
+        {
+            Card selectedcard = DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<CardDisplay>().card;
+            cardInfo.CardInfoPanelShow();
+            cardInfo.ShowCardInfo(selectedcard);
+        }
     }
 
     public void RemoveCardFromDeckGrid()
@@ -98,17 +135,21 @@ public class PopulateAvailableCards : MonoBehaviour
 
     public void AvailableMinusCard()
     {
+        playAnimationForDeck = false;
         if (availableCardIndex > 0)
         {
+            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             availableCardIndex--;
         }
         Debug.Log("Card Index is " + availableCardIndex);
     }
-
+    
     public void AvailablePlusCard()
     {
+        playAnimationForDeck = false;
         if (availableCardIndex < AvailableGrid.childCount-1)
         {
+            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             availableCardIndex++;
         }
         Debug.Log("Card Index is " + availableCardIndex);
@@ -116,8 +157,10 @@ public class PopulateAvailableCards : MonoBehaviour
 
     public void DeckMinusCard()
     {
+        playAnimationForDeck = true;
         if (deckCardIndex > 0)
         {
+            DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             deckCardIndex--;
         }
         Debug.Log("Card Index is " + deckCardIndex);
@@ -125,8 +168,10 @@ public class PopulateAvailableCards : MonoBehaviour
 
     public void DeckPlusCard()
     {
+        playAnimationForDeck = true;
         if (deckCardIndex < DeckGrid.childCount - 1)
         {
+            DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             deckCardIndex++;
         }
         Debug.Log("Card Index is " + deckCardIndex);
