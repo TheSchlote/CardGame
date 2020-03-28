@@ -18,6 +18,8 @@ public class BattleSystem : MonoBehaviour
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
 
+    public PlayerInfo player;
+
     //We need a new copy of our deck to manipulate
     static Dictionary<int, Card> deck = new Dictionary<int, Card>();
 
@@ -34,6 +36,7 @@ public class BattleSystem : MonoBehaviour
             {
                 ResetRound();
                 MyArena.ResetArena();
+                player.AddExperience(60);
                 SceneManager.LoadScene("Main");
             }
         }
