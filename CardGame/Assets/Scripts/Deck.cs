@@ -10,6 +10,7 @@ public class Deck : MonoBehaviour
     public List<Card> cards = new List<Card>();
     public int  numberOfCardsinDeck = deck.Count;
 
+    public static Dictionary<int, Card> enemyDeck = new Dictionary<int, Card>();
 
     // Start is called before the first frame update
     void Start()

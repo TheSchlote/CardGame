@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Robert
   cardDescription: Girls go crazy for a sharp dressed man.
   artWork: {fileID: 21300000, guid: 4754eeeeaf8d85a4cba29466aaabfbfa, type: 3}
+  type: {fileID: 11400000, guid: ea4f2426dfe9c284991e29871c1d9042, type: 2}
   points: 1
   ATK: 4
   HP: 4

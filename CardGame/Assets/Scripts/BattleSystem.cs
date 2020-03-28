@@ -22,6 +22,7 @@ public class BattleSystem : MonoBehaviour
 
     //We need a new copy of our deck to manipulate
     static Dictionary<int, Card> deck = new Dictionary<int, Card>();
+    static Dictionary<int, Card> enemyDeck = new Dictionary<int, Card>();
 
     public BattleState state;
 
@@ -36,7 +37,11 @@ public class BattleSystem : MonoBehaviour
             {
                 ResetRound();
                 MyArena.ResetArena();
-                player.AddExperience(60);
+                //Only Winners get XP
+                if(state == BattleState.WON)
+                {
+                    player.AddExperience(60);
+                }
                 SceneManager.LoadScene("Main");
             }
         }
@@ -45,6 +50,10 @@ public class BattleSystem : MonoBehaviour
     {
         MyHandWindow.SetActive(false);
         deck = new Dictionary<int, Card>(Deck.deck);
+        ArenaManager.totalCardsInDeck = deck.Count;
+        //For now the bad guy mirrors your deck.
+        enemyDeck = new Dictionary<int, Card>(Deck.deck);
+        ArenaManager.totalEnemyCardsInDeck = enemyDeck.Count;
     }
     // Start is called before the first frame update
     void Start()
@@ -70,7 +79,35 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         state = BattleState.DRAWPHASE;
 
-        //during the DrawPhase we always want to draw 5
+        //Enemy Randomly Draw 4 card. so he lives in 3rd round
+        for (int i = 0; Hand.enemyHand.Count < 4; i++)
+        {
+            //I cant draw cards from my deck if there are none.
+            if (enemyDeck.Keys.Count > 0)
+            {
+                int cardindex = Random.Range(enemyDeck.Keys.Min(), enemyDeck.Keys.Max());
+                //Add distinct list of card indexes to draw
+                if (enemyDeck.ContainsKey(cardindex))
+                {
+                    //Add that card to our hand
+                    Hand.enemyHand.Add(cardindex, enemyDeck[cardindex]);
+                    ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
+                    MyArena.AddEnemyPoints(enemyDeck[cardindex].type.ToString(), enemyDeck[cardindex].points);
+                    //And Remove that card so we dont draw it again.
+                    enemyDeck.Remove(cardindex);
+                    ArenaManager.totalEnemyCardsInDeck = enemyDeck.Count;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        //After drawing total up friend points
+
+
+        //during the DrawPhase Player always want to draw 5
         StartCoroutine(DrawCardsFromDeck(5));
 
     }
@@ -81,12 +118,20 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.SUMMONPHASE;
         Debug.Log("Select Available cards...");
 
+        //Enemy AI plays all available cards.
+        foreach (KeyValuePair<int, Card> card in Hand.enemyHand)
+        {
+            Hand.enemyCardsToPlay.Add(card.Key, card.Value);
+        }
+        Hand.enemyHand.Clear();
+        //When AI gets smarter they might not play all cards. Keep in mind.
+        ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
         MyHandWindow.SetActive(true);
 
         //When Card that has cost is selected, subtract appropriate points.
         //Confirm
 
-        //Enemy AI plays all available cards.
+        
         //Animation
 
         //BuffPhase should be next. But for now lets just attack.
@@ -94,28 +139,44 @@ public class BattleSystem : MonoBehaviour
     }
     IEnumerator SummonCards()
     {
-
-
         //Put the cards on the fields.
 
         GameObject[] gameObjects = new GameObject[Hand.cardsToPlay.Count];
-        int joey = Hand.cardsToPlay.Count - 1;
+        int cardSlot = Hand.cardsToPlay.Count - 1;
         foreach (KeyValuePair<int, Card> card in Hand.cardsToPlay)
         {
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
             //I think this will work it will just fill the cards backwards?
             yield return new WaitForSeconds(1f);
-            gameObjects[joey] = Instantiate(playerPrefab, playerBattleStation);
-            Debug.Log("Card Slot " + joey + " filled");
-            joey--;
+            gameObjects[cardSlot] = Instantiate(playerPrefab, playerBattleStation);
+            ArenaManager.totalCardsInHand--;
+            Debug.Log("Card Slot " + cardSlot + " filled");
+            cardSlot--;
         }
-        
+        //Just want to make sure this is accurate
+        ArenaManager.totalCardsInHand = Hand.hand.Count;
         //Discard whatevers in your hand at the end of the round.
         Hand.cardsToPlay.Clear();
 
+
+        //Enemy plays his cards
         yield return new WaitForSeconds(1f);
-        GameObject EnemyGO = Instantiate(enemyPrefab, enemyBattleStation);
-        
+
+        GameObject[] enemyGameObjects = new GameObject[Hand.enemyCardsToPlay.Count];
+        int badGuySlot = Hand.enemyCardsToPlay.Count - 1;
+        foreach (KeyValuePair<int, Card> card in Hand.enemyCardsToPlay)
+        {
+            enemyPrefab.GetComponent<CardDisplay>().card = card.Value;
+            //I think this will work it will just fill the cards backwards?
+            yield return new WaitForSeconds(1f);
+            enemyGameObjects[badGuySlot] = Instantiate(enemyPrefab, enemyBattleStation);
+            ArenaManager.totalEnemyCardsInHand--;
+            badGuySlot--;
+
+        }
+        ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count();
+        Hand.enemyCardsToPlay.Clear();
+
         Debug.Log("Battle is set up.");
 
         StartCoroutine(AddPoints());
@@ -136,8 +197,6 @@ public class BattleSystem : MonoBehaviour
             ArenaManager.totalEnemyHP += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
             yield return new WaitForSeconds(0.5f);
 
-            // this part should really happen after enemy draw
-            ArenaManager.totalNickPoints += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.points;
         }
 
         BattlePhase();
@@ -238,7 +297,6 @@ public class BattleSystem : MonoBehaviour
                 {
                     //Add that card to our hand
                     Hand.hand.Add(cardindex, deck[cardindex]);
-
                     //And Remove that card so we dont draw it again.
                     deck.Remove(cardindex);
                 }
@@ -249,18 +307,22 @@ public class BattleSystem : MonoBehaviour
             }
 
         }
+
         MyHandWindow.SetActive(true);
+
         GameObject[] gameObjects = new GameObject[Hand.hand.Count];
-        int joey = Hand.hand.Count - 1;
+        int handSlot = Hand.hand.Count - 1;
         foreach (KeyValuePair<int, Card> card in Hand.hand)
         {
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
-            ArenaManager.totalJoeyPoints += card.Value.points;
-            //I think this will work it will just fill the cards backwards?
             yield return new WaitForSeconds(1f);
-            gameObjects[joey] = Instantiate(playerPrefab, playerHand);
-            Debug.Log("Hand Slot " + joey + " filled");
-            joey--;
+            MyArena.AddPlayerPoints(card.Value.type.ToString(), card.Value.points);
+            ArenaManager.totalCardsInDeck--;
+            ArenaManager.totalCardsInHand++;
+            gameObjects[handSlot] = Instantiate(playerPrefab, playerHand);
+            
+            Debug.Log("Hand Slot " + handSlot + " filled");
+            handSlot--;
         }
         MyHandWindow.SetActive(false);
         //After drawing total up friend points
@@ -277,14 +339,17 @@ public class BattleSystem : MonoBehaviour
     {
         MyArena.ResetArenaPoints();
         MyHand.cardIndex = 0;
+        ArenaManager.totalCardsInDiscard += Hand.hand.Count();
         Hand.hand.Clear();
         foreach( Transform child in playerBattleStation.transform)
         {
             Destroy(child.gameObject);
+            ArenaManager.totalCardsInDiscard++;
         }
         foreach (Transform card in enemyBattleStation.transform)
         {
             Destroy(card.gameObject);
+            ArenaManager.totalEnemyCardsInDiscard++;
         }
         foreach (Transform card in playerHand.transform)
         {

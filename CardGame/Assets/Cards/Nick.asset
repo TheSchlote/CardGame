@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Nick
   cardDescription: He said he's here but I don't see him?
   artWork: {fileID: 21300000, guid: 36987cb7c5adba9489e4768a0e332976, type: 3}
+  type: {fileID: 11400000, guid: e33d2db13b795974389cccfaffdadf9b, type: 2}
   points: 1
   ATK: 1
   HP: 5

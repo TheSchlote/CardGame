@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Jordan
   cardDescription: Some say its still his turn.
   artWork: {fileID: 21300000, guid: bec64506eed9f5443886b8d452b8b628, type: 3}
+  type: {fileID: 11400000, guid: 435f343c4ce65db4d8e7786a7f244982, type: 2}
   points: 1
   ATK: 2
   HP: 3

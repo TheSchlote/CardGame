@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Joey
   cardDescription: A face only a mother could love.
   artWork: {fileID: 21300000, guid: 2fa0854199fb1f84b8a06b2595183e06, type: 3}
+  type: {fileID: 11400000, guid: 6c4305e1df2a2444cb2402f48eda2de3, type: 2}
   points: 1
   ATK: 3
   HP: 2

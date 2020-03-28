@@ -9,17 +9,13 @@ public class Card : ScriptableObject
     public string cardDescription;
     public Sprite artWork;
 
+    public CardType type;
+
     public int points;
     public int ATK;
     public int HP;
 
 }
 
-//public class CardPoint
-//{
-//    public int NickPoint;
-//    public int JoeyPoint;
-//    public int JordanPoint;
-//    public int RobertPoint;
-//    public int LoganPoint;
-//}
+
+

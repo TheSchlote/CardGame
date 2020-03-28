@@ -8,6 +8,8 @@ public class Hand : MonoBehaviour
     public BattleSystem battleSystem;
     public static Dictionary<int, Card> hand = new Dictionary<int, Card>();
     public static Dictionary<int, Card> cardsToPlay = new Dictionary<int, Card>();
+    public static Dictionary<int, Card> enemyHand = new Dictionary<int, Card>();
+    public static Dictionary<int, Card> enemyCardsToPlay = new Dictionary<int, Card>();
     public Transform HandGrid;
     public int cardIndex;
 
@@ -57,13 +59,12 @@ public class Hand : MonoBehaviour
 
     public void Confirm()
     {
-
-
         //Now that we've confirmed remove those cards from our hand so we can't play them again
         foreach(KeyValuePair<int, Card>card in cardsToPlay)
         {
             HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             hand.Remove(card.Key);
+            ArenaManager.totalCardsInHand = hand.Count;
         }
         //Summon them!
         battleSystem.MyHandWindow.SetActive(false);
