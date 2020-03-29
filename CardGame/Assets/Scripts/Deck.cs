@@ -6,6 +6,8 @@ public class Deck : MonoBehaviour
 {
 
     //public static List<Card> deck = new List<Card>();
+    public int maxCardsInDeck = 15;
+    public int maxSameCardsInDeck = 4;
     public static Dictionary<int, Card> deck = new Dictionary<int, Card>();
     public List<Card> cards = new List<Card>();
     public int  numberOfCardsinDeck = deck.Count;

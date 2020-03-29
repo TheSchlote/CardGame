@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     public static int playerLevel;
     public static int playerXP;
     public static int playerXPToNextLevel;
-    public static readonly int[] experienceNeededToLevelUp = new[] { 60, 100 };
+    public static readonly int[] experienceNeededToLevelUp = new[] { 60, 100, 150, 200, 250 };
     // Start is called before the first frame update
     void Start()
     {

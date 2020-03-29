@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEditor;
 
 public class PopulateAvailableCards : MonoBehaviour
@@ -9,14 +10,18 @@ public class PopulateAvailableCards : MonoBehaviour
     public Transform AvailableGrid;
     public Transform DeckGrid;
     public Deck MyDeck;
-    int availableCardIndex = 0;
-    int deckCardIndex = 0;
+    //int availableCardIndex = 0;
+    //int deckCardIndex = 0;
+
+    //This is a List of all possible cards
     public List<Card> cards = new List<Card>();
     public CardInfo cardInfo;
 
+    public Text cardsInDeck;
+    private Card currentCard;
+
     //Animator stuff
-    public Animator animator;
-    private bool playAnimationForDeck = false;
+    //private bool playAnimationForDeck = false;
 
     private bool showMessage = false;
     private void OnGUI()
@@ -39,40 +44,29 @@ public class PopulateAvailableCards : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //I dont want both of these to run at the same time
-
-        if (playAnimationForDeck)
-        {
-            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            if (Deck.deck.Count > 0)
-            {
-                DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
-            }
-        }
-        else
-        {
-            if (Deck.deck.Count > 0)
-            {
-                DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            }
-            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
-        }
+        cardsInDeck.text = "Deck: " + Deck.deck.Count + "/" + MyDeck.maxCardsInDeck;
     }
 
     void PopulateGrids()
     {
         GameObject newObj;
 
-        foreach(Card card in cards)
+        foreach (Card card in cards)
         {
             newObj = (GameObject)Instantiate(prefab, AvailableGrid);
             newObj.GetComponent<CardDisplay>().card = card;
+            newObj.GetComponent<CardDisplay>().statsText.text = card.ATK.ToString("D2") + "/" + card.HP.ToString("D2");
+            newObj.GetComponent<CardDisplay>().card.artWork = card.artWork;
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { SelectCard(card); });
         }
 
         foreach (KeyValuePair<int, Card> card in Deck.deck)
         {
             newObj = (GameObject)Instantiate(prefab, DeckGrid);
             newObj.GetComponent<CardDisplay>().card = card.Value;
+            newObj.GetComponent<CardDisplay>().statsText.text = card.Value.ATK.ToString("D2") + "/" + card.Value.HP.ToString("D2");
+            newObj.GetComponent<Button>().image.sprite = card.Value.artWork;
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { SelectCard(card.Value); });
         }
     }
 
@@ -81,101 +75,127 @@ public class PopulateAvailableCards : MonoBehaviour
         GameObject newObj;
         newObj = (GameObject)Instantiate(prefab, DeckGrid);
         newObj.GetComponent<CardDisplay>().card = card;
+        newObj.GetComponent<CardDisplay>().statsText.text = card.ATK.ToString("D2") + "/" + card.HP.ToString("D2");
+        newObj.GetComponent<Button>().image.sprite = card.artWork;
+        newObj.GetComponent<Button>().onClick.AddListener(delegate { SelectCard(card); });
     }
-    
+    public void SelectCard(Card selectedcard)
+    {
+        currentCard = selectedcard;
+        cardInfo.CardInfoPanelShow();
+        cardInfo.ShowCardInfo(selectedcard);
+    }
     public void AddCard()
     {
-        //Dont add more than 30 Cards.
-        if (Deck.deck.Count < 10)
+        //Dont add more than cards than are aloud.
+        if (Deck.deck.Count < MyDeck.maxCardsInDeck)
         {
-            cardInfo.CardInfoPanelHide();
-            Card selectedcard = AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<CardDisplay>().card;
+            if (Deck.deck.ContainsValue(currentCard))
+            {
 
-            MyDeck.AddCardToDeck(selectedcard);
-            Debug.Log(selectedcard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
-            PopulateDeckGrid(selectedcard);
+            }
+            cardInfo.CardInfoPanelHide();
+
+            MyDeck.AddCardToDeck(currentCard);
+            Debug.Log(currentCard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
+            PopulateDeckGrid(currentCard);
         }
         else
         {
             showMessage = true;
         }
     }
-
+    
     public void RemoveCard()
     {
-        cardInfo.CardInfoPanelHide();
-        Card selectedcard = DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<CardDisplay>().card;
-        MyDeck.RemoveCardFromDeck(deckCardIndex);
-        Debug.Log(selectedcard + " Removed card from Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
-        RemoveCardFromDeckGrid();
-
-    }
-
-    public void SelectAvailableCard()
-    {
-        Card selectedcard = AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<CardDisplay>().card;
-        cardInfo.CardInfoPanelShow();
-        cardInfo.ShowCardInfo(selectedcard);
-    }
-
-    public void SelectDeckCard()
-    {
-        if (Deck.deck.Count > 0)
+        if (Deck.deck.ContainsValue(currentCard))
         {
-            Card selectedcard = DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<CardDisplay>().card;
-            cardInfo.CardInfoPanelShow();
-            cardInfo.ShowCardInfo(selectedcard);
+            cardInfo.CardInfoPanelHide();
+            
+            foreach (KeyValuePair<int, Card> cardsInDeck in Deck.deck)
+            {
+                if (cardsInDeck.Value == currentCard)
+                {
+                    if (Deck.deck.ContainsKey(cardsInDeck.Key))
+                    {
+                        MyDeck.RemoveCardFromDeck(cardsInDeck.Key);
+                        Debug.Log(currentCard + " Removed card from Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
+                        Debug.Log(cardsInDeck.Key);
+                        RemoveCardFromDeckGrid();
+                        break;
+                    }
+                }
+            }
         }
-    }
-
-    public void RemoveCardFromDeckGrid()
-    {
-        Destroy(DeckGrid.transform.GetChild(deckCardIndex).gameObject);
-    }
-
-    public void AvailableMinusCard()
-    {
-        playAnimationForDeck = false;
-        if (availableCardIndex > 0)
+        else
         {
-            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            availableCardIndex--;
+            Debug.Log("This card isnt in your deck");
         }
-        Debug.Log("Card Index is " + availableCardIndex);
     }
     
-    public void AvailablePlusCard()
+    public void RemoveCardFromDeckGrid()
     {
-        playAnimationForDeck = false;
-        if (availableCardIndex < AvailableGrid.childCount-1)
+        //Destroy all cards
+        foreach (Transform child in DeckGrid.transform)
         {
-            AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            availableCardIndex++;
+            Destroy(child.gameObject);
         }
-        Debug.Log("Card Index is " + availableCardIndex);
+
+        //Repopulate
+        GameObject newObj;
+        foreach (KeyValuePair<int, Card> card in Deck.deck)
+        {
+            newObj = (GameObject)Instantiate(prefab, DeckGrid);
+            newObj.GetComponent<CardDisplay>().card = card.Value;
+            newObj.GetComponent<CardDisplay>().statsText.text = card.Value.ATK.ToString("D2") + "/" + card.Value.HP.ToString("D2");
+            newObj.GetComponent<Button>().image.sprite = card.Value.artWork;
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { SelectCard(card.Value); });
+        }
     }
 
-    public void DeckMinusCard()
-    {
-        playAnimationForDeck = true;
-        if (deckCardIndex > 0)
-        {
-            DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            deckCardIndex--;
-        }
-        Debug.Log("Card Index is " + deckCardIndex);
-    }
+    //public void AvailableMinusCard()
+    //{
+    //    playAnimationForDeck = false;
+    //    if (availableCardIndex > 0)
+    //    {
+    //        AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+    //        availableCardIndex--;
+    //    }
+    //    Debug.Log("Card Index is " + availableCardIndex);
+    //}
+    
+    //public void AvailablePlusCard()
+    //{
+    //    playAnimationForDeck = false;
+    //    if (availableCardIndex < AvailableGrid.childCount-1)
+    //    {
+    //        AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+    //        availableCardIndex++;
+    //    }
+    //    Debug.Log("Card Index is " + availableCardIndex);
+    //}
 
-    public void DeckPlusCard()
-    {
-        playAnimationForDeck = true;
-        if (deckCardIndex < DeckGrid.childCount - 1)
-        {
-            DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-            deckCardIndex++;
-        }
-        Debug.Log("Card Index is " + deckCardIndex);
-    }
+    //public void DeckMinusCard()
+    //{
+    //    playAnimationForDeck = true;
+    //    if (deckCardIndex > 0)
+    //    {
+    //        DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+    //        deckCardIndex--;
+    //    }
+    //    Debug.Log("Card Index is " + deckCardIndex);
+    //}
+
+    //public void DeckPlusCard()
+    //{
+    //    playAnimationForDeck = true;
+    //    if (deckCardIndex < DeckGrid.childCount - 1)
+    //    {
+    //        DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+    //        deckCardIndex++;
+    //    }
+    //    Debug.Log("Card Index is " + deckCardIndex);
+    //}
 
 
 }
