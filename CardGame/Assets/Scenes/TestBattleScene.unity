@@ -2126,6 +2126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec6fc883bf3ea143a33a2c225aedeb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxCardsInDeck: 15
+  maxSameCardsInDeck: 4
   cards:
   - {fileID: 11400000, guid: 04b577633b7691d488c37e3fa831b933, type: 2}
   - {fileID: 11400000, guid: 88f021aa9887ef64ca2dcfed7c5e438a, type: 2}

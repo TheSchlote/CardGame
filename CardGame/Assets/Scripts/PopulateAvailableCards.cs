@@ -10,18 +10,13 @@ public class PopulateAvailableCards : MonoBehaviour
     public Transform AvailableGrid;
     public Transform DeckGrid;
     public Deck MyDeck;
-    //int availableCardIndex = 0;
-    //int deckCardIndex = 0;
-
+    
     //This is a List of all possible cards
     public List<Card> cards = new List<Card>();
     public CardInfo cardInfo;
 
     public Text cardsInDeck;
     private Card currentCard;
-
-    //Animator stuff
-    //private bool playAnimationForDeck = false;
 
     private bool showMessage = false;
     private void OnGUI()
@@ -87,7 +82,7 @@ public class PopulateAvailableCards : MonoBehaviour
     }
     public void AddCard()
     {
-        //Dont add more than cards than are aloud.
+        //Don't add more than cards than are aloud.
         if (Deck.deck.Count < MyDeck.maxCardsInDeck)
         {
             if (Deck.deck.ContainsValue(currentCard))
@@ -129,7 +124,7 @@ public class PopulateAvailableCards : MonoBehaviour
         }
         else
         {
-            Debug.Log("This card isnt in your deck");
+            Debug.Log("This card isn't in your deck");
         }
     }
     
@@ -152,50 +147,4 @@ public class PopulateAvailableCards : MonoBehaviour
             newObj.GetComponent<Button>().onClick.AddListener(delegate { SelectCard(card.Value); });
         }
     }
-
-    //public void AvailableMinusCard()
-    //{
-    //    playAnimationForDeck = false;
-    //    if (availableCardIndex > 0)
-    //    {
-    //        AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-    //        availableCardIndex--;
-    //    }
-    //    Debug.Log("Card Index is " + availableCardIndex);
-    //}
-    
-    //public void AvailablePlusCard()
-    //{
-    //    playAnimationForDeck = false;
-    //    if (availableCardIndex < AvailableGrid.childCount-1)
-    //    {
-    //        AvailableGrid.GetChild(availableCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-    //        availableCardIndex++;
-    //    }
-    //    Debug.Log("Card Index is " + availableCardIndex);
-    //}
-
-    //public void DeckMinusCard()
-    //{
-    //    playAnimationForDeck = true;
-    //    if (deckCardIndex > 0)
-    //    {
-    //        DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-    //        deckCardIndex--;
-    //    }
-    //    Debug.Log("Card Index is " + deckCardIndex);
-    //}
-
-    //public void DeckPlusCard()
-    //{
-    //    playAnimationForDeck = true;
-    //    if (deckCardIndex < DeckGrid.childCount - 1)
-    //    {
-    //        DeckGrid.GetChild(deckCardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
-    //        deckCardIndex++;
-    //    }
-    //    Debug.Log("Card Index is " + deckCardIndex);
-    //}
-
-
 }

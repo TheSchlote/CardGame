@@ -24,16 +24,16 @@ public class Hand : MonoBehaviour
     {
         if(HandGrid.childCount >0)
         {
-            HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", true);
+            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", true);
         }
     }
 
     public void SelectCard()
     {
-        HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
+        //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
         Card selectedcard = HandGrid.GetChild(cardIndex).gameObject.GetComponent<CardDisplay>().card;
         cardsToPlay.Add(cardIndex, selectedcard);
-        HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
+        //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
         Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
     }
 
@@ -41,7 +41,7 @@ public class Hand : MonoBehaviour
     {
         if (cardIndex > 0)
         {
-            HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
+            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
             cardIndex--;
         }
         Debug.Log("Card Index is " + cardIndex);
@@ -51,7 +51,7 @@ public class Hand : MonoBehaviour
     {
         if (cardIndex < HandGrid.childCount - 1)
         {
-            HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
+            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
             cardIndex++;
         }
         Debug.Log("Card Index is " + cardIndex);
@@ -62,7 +62,7 @@ public class Hand : MonoBehaviour
         //Now that we've confirmed remove those cards from our hand so we can't play them again
         foreach(KeyValuePair<int, Card>card in cardsToPlay)
         {
-            HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
+            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", false);
             hand.Remove(card.Key);
             ArenaManager.totalCardsInHand = hand.Count;
         }

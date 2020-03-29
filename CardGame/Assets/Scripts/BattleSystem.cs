@@ -62,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         //Who goes first?
         
         //Both Players Draw...
-        StartCoroutine(DrawPhase());
+        DrawPhase();
     }
 
     void NewRound()
@@ -71,53 +71,26 @@ public class BattleSystem : MonoBehaviour
         //Who goes first?
 
         //Both Players Draw...
-        StartCoroutine(DrawPhase());
+        DrawPhase();
     }
 
-    IEnumerator DrawPhase()
+    void DrawPhase()
     {
-        yield return new WaitForSeconds(0.5f);
         state = BattleState.DRAWPHASE;
 
-        //Enemy Randomly Draw 4 card. so he lives in 3rd round
-        for (int i = 0; Hand.enemyHand.Count < 4; i++)
-        {
-            //I cant draw cards from my deck if there are none.
-            if (enemyDeck.Keys.Count > 0)
-            {
-                int cardindex = Random.Range(enemyDeck.Keys.Min(), enemyDeck.Keys.Max());
-                //Add distinct list of card indexes to draw
-                if (enemyDeck.ContainsKey(cardindex))
-                {
-                    //Add that card to our hand
-                    Hand.enemyHand.Add(cardindex, enemyDeck[cardindex]);
-                    ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
-                    MyArena.AddEnemyPoints(enemyDeck[cardindex].type.ToString(), enemyDeck[cardindex].points);
-                    //And Remove that card so we dont draw it again.
-                    enemyDeck.Remove(cardindex);
-                    ArenaManager.totalEnemyCardsInDeck = enemyDeck.Count;
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        //After drawing total up friend points
-
+        //For now lets keep it fair;
+        EnemyRandomlyDrawCards(4);
 
         //during the DrawPhase Player always want to draw 5
         StartCoroutine(DrawCardsFromDeck(5));
-
     }
-
 
     void SummonPhase()
     {
         state = BattleState.SUMMONPHASE;
         Debug.Log("Select Available cards...");
 
+        //This is temporary until I build AI
         //Enemy AI plays all available cards.
         foreach (KeyValuePair<int, Card> card in Hand.enemyHand)
         {
@@ -126,6 +99,8 @@ public class BattleSystem : MonoBehaviour
         Hand.enemyHand.Clear();
         //When AI gets smarter they might not play all cards. Keep in mind.
         ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
+
+        //Summon Cards is called by hitting Confirm in the MyHandWindow
         MyHandWindow.SetActive(true);
 
         //When Card that has cost is selected, subtract appropriate points.
@@ -137,6 +112,7 @@ public class BattleSystem : MonoBehaviour
         //BuffPhase should be next. But for now lets just attack.
 
     }
+    //This is called from Hand when Player hits confirm
     IEnumerator SummonCards()
     {
         //Put the cards on the fields.
@@ -196,9 +172,9 @@ public class BattleSystem : MonoBehaviour
             ArenaManager.totalEnemyATK += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.ATK;
             ArenaManager.totalEnemyHP += enemyBattleStation.GetChild(i).GetComponent<CardDisplay>().card.HP;
             yield return new WaitForSeconds(0.5f);
-
         }
 
+        //Before the battle phase we should really have the buff phase. but its fine for now
         BattlePhase();
     }
 
@@ -206,53 +182,79 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.BATTLEPHASE;
         Debug.Log("Battle Phase...");
+        StartCoroutine(AttackAnimations());
+    }
+
+    IEnumerator AttackAnimations()
+    {
         if (enemyFirst)
         {
-            //Enemy attacks First
-            EnemyAttack();
-            //Wait
-            
-            PlayerAttack();
+            foreach (Transform card in enemyBattleStation.transform)
+            {
+                card.GetComponent<Animator>().SetBool("CardAttack", true);
+                yield return new WaitForSeconds(.5f);
+                ArenaManager.totalPlayerHP -= card.GetComponent<CardDisplay>().card.ATK;
+                if (ArenaManager.totalPlayerHP < 0)
+                {
+                    ArenaManager.totalPlayerHP = 0;
+                }
+                yield return new WaitForSeconds(.5f);
+                card.GetComponent<Animator>().SetBool("CardAttack", false);
+            }
+
+            yield return new WaitForSeconds(1f);
+
+            foreach (Transform card in playerBattleStation.transform)
+            {
+                card.GetComponent<Animator>().SetBool("CardAttack", true);
+                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(.5f);
+                ArenaManager.totalEnemyHP -= card.GetComponent<CardDisplay>().card.ATK;
+                if (ArenaManager.totalEnemyHP < 0)
+                {
+                    ArenaManager.totalEnemyHP = 0;
+                }
+                yield return new WaitForSeconds(.5f);
+                card.GetComponent<Animator>().SetBool("CardAttack", false);
+            }
         }
         else
-        {
-            //Player Attacks First
+        { 
+            foreach (Transform card in playerBattleStation.transform)
+            {
+                card.GetComponent<Animator>().SetBool("CardAttack", true);
+                yield return new WaitForSeconds(.5f);
+                ArenaManager.totalEnemyHP -= card.GetComponent<CardDisplay>().card.ATK;
+                if (ArenaManager.totalEnemyHP < 0)
+                {
+                    ArenaManager.totalEnemyHP = 0;
+                }
+                yield return new WaitForSeconds(.5f);
+                card.GetComponent<Animator>().SetBool("CardAttack", false);
+            }
 
-            //Damage is dealt
-            PlayerAttack();
+            yield return new WaitForSeconds(1f);
 
-            //Wait
-            
-            EnemyAttack();    
+            foreach (Transform card in enemyBattleStation.transform)
+            {
+                card.GetComponent<Animator>().SetBool("CardAttack", true);
+                yield return new WaitForSeconds(.5f);
+                ArenaManager.totalPlayerHP -= card.GetComponent<CardDisplay>().card.ATK;
+                if (ArenaManager.totalPlayerHP < 0)
+                {
+                    ArenaManager.totalPlayerHP = 0;
+                }
+                yield return new WaitForSeconds(.5f);
+                card.GetComponent<Animator>().SetBool("CardAttack", false);
+            }
         }
 
-        //End of the battlephase
-        
         WhoWon();
-    }
-
-
-
-    void EnemyAttack()
-    {
-        ArenaManager.totalPlayerHP = ArenaManager.totalPlayerHP - ArenaManager.totalEnemyATK;
-        if (ArenaManager.totalPlayerHP < 0)
-        {
-            ArenaManager.totalPlayerHP = 0;
-        }
-    }
-
-    void PlayerAttack()
-    {
-        ArenaManager.totalEnemyHP = ArenaManager.totalEnemyHP - ArenaManager.totalPlayerATK;
-        if (ArenaManager.totalEnemyHP < 0)
-        {
-            ArenaManager.totalEnemyHP = 0;
-        }
     }
 
     void WhoWon()
     {
+        //Enemy wins ties
         if (ArenaManager.totalPlayerHP <= ArenaManager.totalEnemyHP)
         {
             state = BattleState.LOST;
@@ -282,10 +284,8 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
-
-    IEnumerator DrawCardsFromDeck(int drawAmount)
+    void RandomlyDrawCards(int drawAmount)
     {
-        //Randomly Draw 5 card.
         for (int i = 0; Hand.hand.Count < drawAmount; i++)
         {
             //I cant draw cards from my deck if there are none.
@@ -305,34 +305,73 @@ public class BattleSystem : MonoBehaviour
             {
                 break;
             }
-
         }
+    }
+    void EnemyRandomlyDrawCards(int drawAmount)
+    {
+        //Enemy Randomly Draw 4 card. so he lives in 3rd round
+        for (int i = 0; Hand.enemyHand.Count < drawAmount; i++)
+        {
+            //I cant draw cards from my deck if there are none.
+            if (enemyDeck.Keys.Count > 0)
+            {
+                int cardindex = Random.Range(enemyDeck.Keys.Min(), enemyDeck.Keys.Max());
+                //Add distinct list of card indexes to draw
+                if (enemyDeck.ContainsKey(cardindex))
+                {
+                    //Add that card to our hand
+                    Hand.enemyHand.Add(cardindex, enemyDeck[cardindex]);
+                    ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
+                    MyArena.AddEnemyPoints(enemyDeck[cardindex].type.ToString(), enemyDeck[cardindex].points);
+                    //And Remove that card so we dont draw it again.
+                    enemyDeck.Remove(cardindex);
+                    ArenaManager.totalEnemyCardsInDeck = enemyDeck.Count;
+                }
+            }
+            else
+            {
+                //We can't draw anymore cards, exit the loop
+                break;
+            }
+        }
+    }
 
+    IEnumerator DrawCardsFromDeck(int drawAmount)
+    {
+        //Randomly Draw cards.
+        RandomlyDrawCards(drawAmount);
+
+        //Show your hand window
         MyHandWindow.SetActive(true);
 
+        //We need to make a gameobject for each card in your hand
         GameObject[] gameObjects = new GameObject[Hand.hand.Count];
+        //We need this counter to know which card goes where
         int handSlot = Hand.hand.Count - 1;
+
         foreach (KeyValuePair<int, Card> card in Hand.hand)
         {
+            //Assign the card
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
-            yield return new WaitForSeconds(1f);
+            //After drawing total up friend points
             MyArena.AddPlayerPoints(card.Value.type.ToString(), card.Value.points);
+            //This helps the visuals update
             ArenaManager.totalCardsInDeck--;
             ArenaManager.totalCardsInHand++;
             gameObjects[handSlot] = Instantiate(playerPrefab, playerHand);
-            
-            Debug.Log("Hand Slot " + handSlot + " filled");
             handSlot--;
+            yield return new WaitForSeconds(1f);
         }
+
+        //Close your hand window
         MyHandWindow.SetActive(false);
-        //After drawing total up friend points
-
-
+        
+        //Since we could be drawing cards in other phases
         if(state == BattleState.DRAWPHASE)
         {
+            //Next should really be AbilityPhase but we skip that for now
             SummonPhase();
         }
-
     }
 
     void ResetRound()

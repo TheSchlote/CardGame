@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ArenaManager : MonoBehaviour
 {
-
     public Text txttotalPlayerATK;
     public Text txttotalPlayerHP;
     public Text txttotalEnemyATK;
@@ -67,7 +66,7 @@ public class ArenaManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //txttotalPlayerATK.text = "0";
+
     }
 
     // Update is called once per frame
@@ -91,7 +90,6 @@ public class ArenaManager : MonoBehaviour
         txttotalEnemyCardsInDeck.text = totalEnemyCardsInDeck.ToString("D2");
         txttotalEnemyCardsInHand.text = totalEnemyCardsInHand.ToString("D2");
         txttotalEnemyCardsInDiscard.text = totalEnemyCardsInDiscard.ToString("D2");
-
 
         txttotalNickPoints.text = totalNickPoints.ToString("D2");
         txttotalJoeyPoints.text = totalJoeyPoints.ToString("D2");
@@ -123,7 +121,6 @@ public class ArenaManager : MonoBehaviour
         totalEnemyCardsInDeck = 0;
         totalEnemyCardsInHand = 0;
         totalEnemyCardsInDiscard = 0;
-
 
         totalNickPoints = 0;
         totalJoeyPoints = 0;
@@ -189,6 +186,5 @@ public class ArenaManager : MonoBehaviour
                 //No Points Added
                 break;
         }
-
     }
 }

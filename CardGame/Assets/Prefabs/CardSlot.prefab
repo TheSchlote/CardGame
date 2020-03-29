@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3997142285480888485}
   - component: {fileID: 3997142285480888486}
-  - component: {fileID: 8769701043540909276}
+  - component: {fileID: 845201230131306207}
   m_Layer: 5
   m_Name: CardSlot
   m_TagString: Card
@@ -205,7 +205,7 @@ MonoBehaviour:
   card: {fileID: 11400000, guid: 76626a2cbd18090428e5fde54d6ebffd, type: 2}
   artWork: {fileID: 3997142286480525793}
   statsText: {fileID: 3997142285170621892}
---- !u!95 &8769701043540909276
+--- !u!95 &845201230131306207
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
