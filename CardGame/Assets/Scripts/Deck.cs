@@ -16,6 +16,7 @@ public class Deck : MonoBehaviour
     //This may need to be its own scrip. but for now this works.
     public static Dictionary<int, Card> enemyDeck = new Dictionary<int, Card>();
 
+
     public void AddCardToDeck(Card card)
     {
         numberOfCardsinDeck = deck.Count;

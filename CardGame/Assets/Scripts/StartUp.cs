@@ -14,6 +14,8 @@ public class StartUp : MonoBehaviour
     private InputField infName;
     private TouchScreenKeyboard keyboard;
 
+    public PlayerInfo player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +61,7 @@ public class StartUp : MonoBehaviour
 
     public void StartGame()
     {
+        player.AddStartingCards();
         PlayerInfo.playerName = infName.text;
         SceneManager.LoadScene("Main");
     }

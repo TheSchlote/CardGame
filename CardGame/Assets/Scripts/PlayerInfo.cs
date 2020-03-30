@@ -10,7 +10,12 @@ public class PlayerInfo : MonoBehaviour
     public static int playerLevel;
     public static int playerXP;
     public static int playerXPToNextLevel;
-    public static readonly int[] experienceNeededToLevelUp = new[] { 60, 100, 150, 200, 250 };
+    public static readonly int[] experienceNeededToLevelUp = new[] { 60, 100, 150, 200, 250, 300 };
+
+    //This will need to be in its own scrip but it can live here for now.
+    public Deck myDeck;
+    public static Dictionary<Card, int> playerCardInventory = new Dictionary<Card, int>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,5 +47,14 @@ public class PlayerInfo : MonoBehaviour
             }
         }
         Debug.Log(playerXPToNextLevel);
+    }
+
+    public void AddStartingCards()
+    {
+        //Testing I want to add five of each card.
+        foreach (Card card in myDeck.cards)
+        {
+            playerCardInventory.Add(card, 5);
+        }
     }
 }

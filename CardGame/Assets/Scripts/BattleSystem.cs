@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Linq;
 
 public enum BattleState { START,DRAWPHASE, ABILITYPHASE, SUMMONPHASE, BUFFPHASE, BATTLEPHASE, PLAYERTURN, ENEMYTURN, WON, LOST}
@@ -9,7 +10,9 @@ public class BattleSystem : MonoBehaviour
 {
     public ArenaManager MyArena;
     public Hand MyHand;
+    private Card currentCard;
 
+    public GameObject handCardSlotPrefab;
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
     public GameObject MyHandWindow;
@@ -48,6 +51,7 @@ public class BattleSystem : MonoBehaviour
     }
     private void Awake()
     {
+
         MyHandWindow.SetActive(false);
         deck = new Dictionary<int, Card>(Deck.deck);
         ArenaManager.totalCardsInDeck = deck.Count;
@@ -352,13 +356,16 @@ public class BattleSystem : MonoBehaviour
         foreach (KeyValuePair<int, Card> card in Hand.hand)
         {
             //Assign the card
-            playerPrefab.GetComponent<CardDisplay>().card = card.Value;
+            handCardSlotPrefab.GetComponent<CardDisplay>().card = card.Value;
+            handCardSlotPrefab.GetComponent<CardDisplay>().artWork.sprite = card.Value.artWork;
+            handCardSlotPrefab.GetComponent<CardDisplay>().statsText.text = card.Value.ATK.ToString("D2") + "/" + card.Value.HP.ToString("D2");
             //After drawing total up friend points
             MyArena.AddPlayerPoints(card.Value.type.ToString(), card.Value.points);
             //This helps the visuals update
             ArenaManager.totalCardsInDeck--;
             ArenaManager.totalCardsInHand++;
-            gameObjects[handSlot] = Instantiate(playerPrefab, playerHand);
+            gameObjects[handSlot] = Instantiate(handCardSlotPrefab, playerHand);
+            gameObjects[handSlot].GetComponent<Button>().onClick.AddListener(delegate { MyHand.SelectCard(card); ChangeColor(); });
             handSlot--;
             yield return new WaitForSeconds(1f);
         }
@@ -372,6 +379,11 @@ public class BattleSystem : MonoBehaviour
             //Next should really be AbilityPhase but we skip that for now
             SummonPhase();
         }
+    }
+
+    void ChangeColor()
+    {
+        GetComponent<Image>().color = Color.yellow;
     }
 
     void ResetRound()

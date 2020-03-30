@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Hand : MonoBehaviour
@@ -28,33 +29,18 @@ public class Hand : MonoBehaviour
         }
     }
 
-    public void SelectCard()
+    public void SelectCard(KeyValuePair<int, Card> selectedcard)
     {
-        //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
-        Card selectedcard = HandGrid.GetChild(cardIndex).gameObject.GetComponent<CardDisplay>().card;
-        cardsToPlay.Add(cardIndex, selectedcard);
-        //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectedCard", true);
-        Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
-    }
-
-    public void LeftCard()
-    {
-        if (cardIndex > 0)
-        {
-            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
-            cardIndex--;
+        if (cardsToPlay.ContainsKey(selectedcard.Key))
+        { 
+            cardsToPlay.Remove(selectedcard.Key);
+            Debug.Log(selectedcard + " Removed from CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
         }
-        Debug.Log("Card Index is " + cardIndex);
-    }
-
-    public void RightCard()
-    {
-        if (cardIndex < HandGrid.childCount - 1)
+        else
         {
-            //HandGrid.GetChild(cardIndex).gameObject.GetComponent<Animator>().SetBool("SelectCard", false);
-            cardIndex++;
+            cardsToPlay.Add(selectedcard.Key, selectedcard.Value);
+            Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
         }
-        Debug.Log("Card Index is " + cardIndex);
     }
 
     public void Confirm()
