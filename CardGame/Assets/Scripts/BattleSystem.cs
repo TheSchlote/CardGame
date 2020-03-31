@@ -102,7 +102,6 @@ public class BattleSystem : MonoBehaviour
         }
         Hand.enemyHand.Clear();
         //When AI gets smarter they might not play all cards. Keep in mind.
-        ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count;
 
         //Summon Cards is called by hitting Confirm in the MyHandWindow
         MyHandWindow.SetActive(true);
@@ -365,7 +364,7 @@ public class BattleSystem : MonoBehaviour
             ArenaManager.totalCardsInDeck--;
             ArenaManager.totalCardsInHand++;
             gameObjects[handSlot] = Instantiate(handCardSlotPrefab, playerHand);
-            gameObjects[handSlot].GetComponent<Button>().onClick.AddListener(delegate { MyHand.SelectCard(card); ChangeColor(); });
+            gameObjects[handSlot].GetComponent<Button>().onClick.AddListener(delegate { MyHand.SelectCard(card); });
             handSlot--;
             yield return new WaitForSeconds(1f);
         }
@@ -379,11 +378,6 @@ public class BattleSystem : MonoBehaviour
             //Next should really be AbilityPhase but we skip that for now
             SummonPhase();
         }
-    }
-
-    void ChangeColor()
-    {
-        GetComponent<Image>().color = Color.yellow;
     }
 
     void ResetRound()
