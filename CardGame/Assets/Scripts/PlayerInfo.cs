@@ -88,12 +88,13 @@ public class PlayerInfo : MonoBehaviour
         //Save Everything
         QuickSaveWriter.Create("SaveEverything")
                            .Write("PlayerName", playerName)
-                           //.Write("PlayerIcon", playerIcon)
+                           //.Write("PlayerIcon", GameObject.Find("btnPlayerIcon").GetComponent<Image>().sprite)
                            .Write("PlayerLevel", playerLevel)
                            .Write("PlayerXP", playerXP)
                            .Write("PlayerCardInventory", playerCardInventoryFake)
                            .Write("PlayerDeck", deckFakeList)
                            .Commit();
+        Debug.Log("Saved!");
     }
 
     public void LoadGameData()

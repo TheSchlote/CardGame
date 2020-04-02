@@ -64,10 +64,21 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.START;
         //Who goes first?
-        
+        enemyFirst = WhoGoesFirst();
+        Debug.Log(enemyFirst);
         //Both Players Draw...
         DrawPhase();
     }
+
+    private bool WhoGoesFirst()
+    {
+        if (Random.value >= 0.5)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     void NewRound()
     {

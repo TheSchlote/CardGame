@@ -85,6 +85,7 @@
     <Compile Include="Assets\QuickSave\QuickSaveSettings.cs" />
     <Compile Include="Assets\QuickSave\QuickSaveWriter.cs" />
     <Compile Include="Assets\QuickSave\SecurityMode.cs" />
+    <Compile Include="Assets\Scripts\Abilities.cs" />
     <Compile Include="Assets\Scripts\ArenaManager.cs" />
     <Compile Include="Assets\Scripts\BattleSystem.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
