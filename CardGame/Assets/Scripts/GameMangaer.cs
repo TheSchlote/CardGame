@@ -19,4 +19,9 @@ public class GameMangaer : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void StartShop()
+    {
+        SceneManager.LoadScene("ShopScene");
+    }
 }

@@ -63,6 +63,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\QuickSave\Core\Helpers\TypeHelper.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Bounds.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Color.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Color32.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Matrix4x4.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Quaternion.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Rect.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Sprite.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Texture2D.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Vector2.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Vector3.cs" />
+    <Compile Include="Assets\QuickSave\Core\Models\Vector4.cs" />
+    <Compile Include="Assets\QuickSave\Core\Security\Cryptography.cs" />
+    <Compile Include="Assets\QuickSave\Core\Serialisers\JsonSerialiser.cs" />
+    <Compile Include="Assets\QuickSave\Core\Storage\FileAccess.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveException.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveRaw.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveReader.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveRoot.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveSettings.cs" />
+    <Compile Include="Assets\QuickSave\QuickSaveWriter.cs" />
+    <Compile Include="Assets\QuickSave\SecurityMode.cs" />
     <Compile Include="Assets\Scripts\ArenaManager.cs" />
     <Compile Include="Assets\Scripts\BattleSystem.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
@@ -76,6 +98,8 @@
     <Compile Include="Assets\Scripts\PlayerInfo.cs" />
     <Compile Include="Assets\Scripts\PopulateAvailableCards.cs" />
     <Compile Include="Assets\Scripts\StartUp.cs" />
+    <None Include="Assets\QuickSave\readme.txt" />
+    <None Include="Assets\QuickSave\Plugins\JsonDotNet\link.xml" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity/Repos/CardGame/CardGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -279,6 +303,9 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:/Unity/Repos/CardGame/CardGame/Assets/QuickSave/Plugins/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
