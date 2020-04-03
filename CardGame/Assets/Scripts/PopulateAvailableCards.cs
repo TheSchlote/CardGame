@@ -104,7 +104,7 @@ public class PopulateAvailableCards : MonoBehaviour
             MyDeck.AddCardToDeck(currentCard);
             PlayerInfo.playerCardInventory[currentCard]--;
             UpdateAvailableCardsGrid();
-            Debug.Log(currentCard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
+            //Debug.Log(currentCard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
             PopulateDeckGrid(currentCard);   
         }
         else
@@ -158,8 +158,8 @@ public class PopulateAvailableCards : MonoBehaviour
                         MyDeck.RemoveCardFromDeck(cardsInDeck.Key);
                         PlayerInfo.playerCardInventory[currentCard]++;
                         UpdateAvailableCardsGrid();
-                        Debug.Log(currentCard + " Removed card from Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
-                        Debug.Log(cardsInDeck.Key);
+                        //Debug.Log(currentCard + " Removed card from Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
+                        //Debug.Log(cardsInDeck.Key);
                         RemoveCardFromDeckGrid();
                         break;
                     }

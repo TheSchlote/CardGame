@@ -15,6 +15,10 @@ public class Card : ScriptableObject
     public int ATK;
     public int HP;
 
+    //This is how we know if its not a monster
+    //public bool AbilityCard;
+    //public bool BuffCard;
+
 }
 
 

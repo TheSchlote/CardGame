@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using CI.QuickSave;
 
 public class PlayerInfo : MonoBehaviour
@@ -17,18 +18,10 @@ public class PlayerInfo : MonoBehaviour
     public Deck myDeck;
     public static Dictionary<Card, int> playerCardInventory = new Dictionary<Card, int>();
 
-    private void Awake()
-    {
-        //Eventually I want to send them to the Startupscreen if they have no inventory
-        if(playerCardInventory.Count <= 0)
-        {
-
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+
         playerXPToNextLevel = experienceNeededToLevelUp[playerLevel];
     }
 
@@ -45,7 +38,7 @@ public class PlayerInfo : MonoBehaviour
         {
             if (playerLevel >= experienceNeededToLevelUp.Length - 1)
             {
-                Debug.Log("Max Level Reached!");
+                //Debug.Log("Max Level Reached!");
             }
             else
             {
@@ -56,7 +49,7 @@ public class PlayerInfo : MonoBehaviour
                 playerXPToNextLevel = experienceNeededToLevelUp[playerLevel];
             }
         }
-        Debug.Log(playerXPToNextLevel);
+        //Debug.Log(playerXPToNextLevel);
     }
 
     public void AddStartingCards()
@@ -88,13 +81,29 @@ public class PlayerInfo : MonoBehaviour
         //Save Everything
         QuickSaveWriter.Create("SaveEverything")
                            .Write("PlayerName", playerName)
-                           //.Write("PlayerIcon", GameObject.Find("btnPlayerIcon").GetComponent<Image>().sprite)
+                           .Write("PlayerIcon", playerIcon)
                            .Write("PlayerLevel", playerLevel)
                            .Write("PlayerXP", playerXP)
                            .Write("PlayerCardInventory", playerCardInventoryFake)
                            .Write("PlayerDeck", deckFakeList)
                            .Commit();
-        Debug.Log("Saved!");
+        //Debug.Log("Saved!");
+    }
+
+    public void SaveNewGameData()
+    {
+        Dictionary<string, int> playerCardInventoryFake = new Dictionary<string, int>();
+        List<string> deckFakeList = new List<string>();
+
+        //Save Everything as blank
+        QuickSaveWriter.Create("SaveEverything")
+                           .Write("PlayerName", "")
+                           .Write("PlayerIcon", "")
+                           .Write("PlayerLevel", 0)
+                           .Write("PlayerXP", 0)
+                           .Write("PlayerCardInventory", playerCardInventoryFake)
+                           .Write("PlayerDeck", deckFakeList)
+                           .Commit();
     }
 
     public void LoadGameData()
@@ -104,7 +113,7 @@ public class PlayerInfo : MonoBehaviour
 
         QuickSaveReader.Create("SaveEverything")
                        .Read<string>("PlayerName", (r) => { playerName = r; })
-                       //.Read<Sprite>("PlayerIcon", (r) => { playerIcon = r; })
+                       .Read<Sprite>("PlayerIcon", (r) => { playerIcon = r; })
                        .Read<int>("PlayerLevel", (r) => { playerLevel = r; })
                        .Read<int>("PlayerXP", (r) => { playerXP = r; })
                        .Read<Dictionary<string, int>>("PlayerCardInventory", (r) => { playerCardInventoryFake = r; })
@@ -124,8 +133,5 @@ public class PlayerInfo : MonoBehaviour
             Deck.deck.Add(i, myDeck.cards.Find(x => x.name == card));
             i++;
         }
-
-        //Just for me
-        playerXPToNextLevel = experienceNeededToLevelUp[playerLevel];
     }
 }

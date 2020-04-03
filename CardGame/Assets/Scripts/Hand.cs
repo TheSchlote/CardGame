@@ -46,13 +46,13 @@ public class Hand : MonoBehaviour
         if (cardsToPlay.ContainsKey(selectedcard.Key))
         { 
             cardsToPlay.Remove(selectedcard.Key);
-            Debug.Log(selectedcard + " Removed from CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
+            //Debug.Log(selectedcard + " Removed from CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
             battleSystem.MyHandWindow.transform.GetChild(0).transform.GetChild(cardIndex).GetComponent<Image>().color = Color.white;
         }
         else
         {
             cardsToPlay.Add(selectedcard.Key, selectedcard.Value);
-            Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
+            //Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
             battleSystem.MyHandWindow.transform.GetChild(0).transform.GetChild(cardIndex).GetComponent<Image>().color = Color.yellow;
         }
     }

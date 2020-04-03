@@ -65,7 +65,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.START;
         //Who goes first?
         enemyFirst = WhoGoesFirst();
-        Debug.Log(enemyFirst);
+        //Debug.Log(enemyFirst);
         //Both Players Draw...
         DrawPhase();
     }
@@ -103,7 +103,7 @@ public class BattleSystem : MonoBehaviour
     void SummonPhase()
     {
         state = BattleState.SUMMONPHASE;
-        Debug.Log("Select Available cards...");
+        //Debug.Log("Select Available cards...");
 
         //This is temporary until I build AI
         //Enemy AI plays all available cards.
@@ -140,7 +140,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             gameObjects[cardSlot] = Instantiate(playerPrefab, playerBattleStation);
             ArenaManager.totalCardsInHand--;
-            Debug.Log("Card Slot " + cardSlot + " filled");
+            //Debug.Log("Card Slot " + cardSlot + " filled");
             cardSlot--;
         }
         //Just want to make sure this is accurate
@@ -167,7 +167,7 @@ public class BattleSystem : MonoBehaviour
         ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count();
         Hand.enemyCardsToPlay.Clear();
 
-        Debug.Log("Battle is set up.");
+        //Debug.Log("Battle is set up.");
 
         StartCoroutine(AddPoints());
     }
@@ -195,7 +195,7 @@ public class BattleSystem : MonoBehaviour
     void BattlePhase()
     {
         state = BattleState.BATTLEPHASE;
-        Debug.Log("Battle Phase...");
+        //Debug.Log("Battle Phase...");
         StartCoroutine(AttackAnimations());
     }
 

@@ -27,12 +27,12 @@ public class Deck : MonoBehaviour
         }
         else
         {
-            Debug.Log("Uh oh, I added 1");
+            //Debug.Log("Uh oh, I added 1");
             //We need to keep looping though this until we free up a number.
             while (deck.ContainsKey(numberOfCardsinDeck))
             {
                 numberOfCardsinDeck++;
-                Debug.Log("Uh oh, I added 1 again");
+                //Debug.Log("Uh oh, I added 1 again");
             }
             deck.Add(numberOfCardsinDeck, card);
         }

@@ -63,6 +63,7 @@ public class StartUp : MonoBehaviour
     {
         player.AddStartingCards();
         PlayerInfo.playerName = infName.text;
+        player.SaveGameData();
         SceneManager.LoadScene("Main");
     }
 }
