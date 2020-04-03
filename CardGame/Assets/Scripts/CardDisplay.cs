@@ -13,7 +13,14 @@ public class CardDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        statsText.text = card.ATK.ToString("D2") + "/" + card.HP.ToString("D2") ;
+        if(card.AbilityCard || card.BuffCard)
+        {
+            statsText.text = "Ability";
+        }
+        else
+        {
+            statsText.text = card.ATK.ToString("D2") + "/" + card.HP.ToString("D2");
+        }
         artWork.sprite = card.artWork;
     }
 }

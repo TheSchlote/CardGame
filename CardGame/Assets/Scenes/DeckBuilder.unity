@@ -1766,6 +1766,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a9ce3b4a99794874ab3022a3b959bdc1, type: 2}
   - {fileID: 11400000, guid: 88f021aa9887ef64ca2dcfed7c5e438a, type: 2}
   - {fileID: 11400000, guid: c69b5535ec3e047408757e65be2f8650, type: 2}
+  - {fileID: 11400000, guid: 68f8f0d63fd7f2d4f84afe518dfa4eb1, type: 2}
   numberOfCardsinDeck: 0
 --- !u!114 &1107870637
 MonoBehaviour:

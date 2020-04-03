@@ -65,7 +65,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.START;
         //Who goes first?
         enemyFirst = WhoGoesFirst();
-        //Debug.Log(enemyFirst);
+        
         //Both Players Draw...
         DrawPhase();
     }
@@ -190,6 +190,20 @@ public class BattleSystem : MonoBehaviour
 
         //Before the battle phase we should really have the buff phase. but its fine for now
         BattlePhase();
+    }
+
+    void BuffPhase()
+    {
+        state = BattleState.BUFFPHASE;
+        //Do we have any ability cards in our hand?
+        foreach (KeyValuePair<int, Card> card in Hand.hand)
+        {
+            if (card.Value.BuffCard == true)
+            {
+                //We can play it
+
+            }
+        }
     }
 
     void BattlePhase()
@@ -389,6 +403,21 @@ public class BattleSystem : MonoBehaviour
             //Next should really be AbilityPhase but we skip that for now
             SummonPhase();
         }
+    }
+
+    void AbilityPhase()
+    {
+        state = BattleState.ABILITYPHASE;
+        //Do we have any ability cards in our hand?
+        foreach(KeyValuePair<int, Card> card in Hand.hand)
+        {
+            if(card.Value.AbilityCard == true)
+            {
+                //We can play it
+
+            }
+        }
+
     }
 
     void ResetRound()
