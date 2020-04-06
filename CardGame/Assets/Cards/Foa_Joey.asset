@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86c1b1833be69b54ea10349c9bd4363f, type: 3}
-  m_Name: Foa Joey!
+  m_Name: Foa_Joey
   m_EditorClassIdentifier: 
-  cardName: Foa Joey!
+  cardName: Foa_Joey
   cardDescription: Give a card on the field +10 ATK.
   artWork: {fileID: 21300000, guid: a656e8491dea22741bb746a2ea4d3873, type: 3}
   type: {fileID: 11400000, guid: 6c4305e1df2a2444cb2402f48eda2de3, type: 2}

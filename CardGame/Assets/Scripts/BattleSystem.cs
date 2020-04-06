@@ -22,6 +22,7 @@ public class BattleSystem : MonoBehaviour
     public Transform enemyBattleStation;
 
     public PlayerInfo player;
+    public Abilities ability;
 
     //We need a new copy of our deck to manipulate
     static Dictionary<int, Card> deck = new Dictionary<int, Card>();
@@ -79,7 +80,6 @@ public class BattleSystem : MonoBehaviour
         return false;
     }
 
-
     void NewRound()
     {
         state = BattleState.START;
@@ -109,23 +109,16 @@ public class BattleSystem : MonoBehaviour
         //Enemy AI plays all available cards.
         foreach (KeyValuePair<int, Card> card in Hand.enemyHand)
         {
-            Hand.enemyCardsToPlay.Add(card.Key, card.Value);
+            if (card.Value.AbilityCard == false && card.Value.BuffCard == false)
+                Hand.enemyCardsToPlay.Add(card.Key, card.Value);
         }
         Hand.enemyHand.Clear();
         //When AI gets smarter they might not play all cards. Keep in mind.
 
         //Summon Cards is called by hitting Confirm in the MyHandWindow
         MyHandWindow.SetActive(true);
-
-        //When Card that has cost is selected, subtract appropriate points.
-        //Confirm
-
-        
-        //Animation
-
-        //BuffPhase should be next. But for now lets just attack.
-
     }
+
     //This is called from Hand when Player hits confirm
     IEnumerator SummonCards()
     {
@@ -138,9 +131,10 @@ public class BattleSystem : MonoBehaviour
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
             //I think this will work it will just fill the cards backwards?
             yield return new WaitForSeconds(1f);
+
             gameObjects[cardSlot] = Instantiate(playerPrefab, playerBattleStation);
+            gameObjects[cardSlot].GetComponent<Button>().onClick.AddListener(delegate { ability.SelectCardOnField(card.Value); });
             ArenaManager.totalCardsInHand--;
-            //Debug.Log("Card Slot " + cardSlot + " filled");
             cardSlot--;
         }
         //Just want to make sure this is accurate
@@ -188,28 +182,67 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        //Before the battle phase we should really have the buff phase. but its fine for now
-        BattlePhase();
+        BuffPhase();
     }
 
-    void BuffPhase()
+    public void BuffPhase()
     {
         state = BattleState.BUFFPHASE;
-        //Do we have any ability cards in our hand?
-        foreach (KeyValuePair<int, Card> card in Hand.hand)
+        //Do you want to play a buff card?
+        if (Hand.hand.Count > 0)
         {
-            if (card.Value.BuffCard == true)
+            //Do we have any buff cards in our hand?
+            foreach (KeyValuePair<int, Card> card in Hand.hand)
             {
-                //We can play it
+                if (card.Value.BuffCard == true)
+                {
+                    foreach (Transform cardtrans in playerHand.transform)
+                    {
+                        Destroy(cardtrans.gameObject);
+                    }
+                    //We need to make a gameobject for each card in your hand
+                    GameObject[] gameObjects = new GameObject[Hand.hand.Count];
+                    //We need this counter to know which card goes where
+                    int handSlot = Hand.hand.Count - 1;
+                    foreach (KeyValuePair<int, Card> cardAgain in Hand.hand)
+                    {
+                        //Assign the card
+                        handCardSlotPrefab.GetComponent<CardDisplay>().card = cardAgain.Value;
+                        handCardSlotPrefab.GetComponent<CardDisplay>().artWork.sprite = cardAgain.Value.artWork;
 
+                        gameObjects[handSlot] = Instantiate(handCardSlotPrefab, playerHand);
+                        gameObjects[handSlot].GetComponent<Button>().onClick.AddListener(delegate { MyHand.SelectCard(cardAgain); });
+                        handSlot--;
+                    }
+
+                    MyHandWindow.SetActive(true);
+                    break;
+                }
+                BattlePhase();
             }
         }
+        else
+        {
+            BattlePhase();
+        }
+    }
+    IEnumerator ApplyBuff()
+    {
+        //There should only be one card here but this is fine.
+        foreach (KeyValuePair<int, Card> card in Hand.cardsToPlay)
+        {
+            yield return new WaitForSeconds(.5f);
+            ability.StartCoroutine(card.Value.name.ToString());
+        }
+        Hand.cardsToPlay.Clear();
     }
 
     void BattlePhase()
     {
         state = BattleState.BATTLEPHASE;
         //Debug.Log("Battle Phase...");
+
+
         StartCoroutine(AttackAnimations());
     }
 
@@ -426,7 +459,8 @@ public class BattleSystem : MonoBehaviour
         MyHand.cardIndex = 0;
         ArenaManager.totalCardsInDiscard += Hand.hand.Count();
         Hand.hand.Clear();
-        foreach( Transform child in playerBattleStation.transform)
+        Hand.cardsToPlay.Clear();
+        foreach ( Transform child in playerBattleStation.transform)
         {
             Destroy(child.gameObject);
             ArenaManager.totalCardsInDiscard++;

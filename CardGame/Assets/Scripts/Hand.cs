@@ -29,6 +29,34 @@ public class Hand : MonoBehaviour
 
     public void SelectCard(KeyValuePair<int, Card> selectedcard)
     {
+        switch (battleSystem.state.ToString())
+        {
+            case "ABILITYPHASE":
+                if (selectedcard.Value.AbilityCard == true)
+                {
+                    DoStuff(selectedcard);
+                }
+                break;
+
+            case "SUMMONPHASE":
+                if(selectedcard.Value.AbilityCard == false && selectedcard.Value.BuffCard == false)
+                {
+                    DoStuff(selectedcard);
+                }
+                break;
+
+            case "BUFFPHASE":
+                if (selectedcard.Value.BuffCard == true && cardsToPlay.Count !=1)
+                {
+                    DoStuff(selectedcard);
+                }
+                break;
+        }
+
+    }
+
+    private void DoStuff(KeyValuePair<int, Card> selectedcard)
+    {
         //The for loop below is how we know which card to highlight
         int cardIndex = 0;
         for (int i = 0; i < hand.Count; i++)
@@ -44,18 +72,17 @@ public class Hand : MonoBehaviour
         }
 
         if (cardsToPlay.ContainsKey(selectedcard.Key))
-        { 
+        {
             cardsToPlay.Remove(selectedcard.Key);
-            //Debug.Log(selectedcard + " Removed from CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
             battleSystem.MyHandWindow.transform.GetChild(0).transform.GetChild(cardIndex).GetComponent<Image>().color = Color.white;
         }
         else
         {
             cardsToPlay.Add(selectedcard.Key, selectedcard.Value);
-            //Debug.Log(selectedcard + " Added to CardstoPlay. There are now " + cardsToPlay.Count + " Cards ready to be played");
             battleSystem.MyHandWindow.transform.GetChild(0).transform.GetChild(cardIndex).GetComponent<Image>().color = Color.yellow;
         }
     }
+
 
     public void Confirm()
     {
@@ -64,8 +91,23 @@ public class Hand : MonoBehaviour
         {
             hand.Remove(card.Key);
         }
-        //Summon them!
+
         battleSystem.MyHandWindow.SetActive(false);
-        battleSystem.StartCoroutine("SummonCards");
+
+        switch (battleSystem.state.ToString()) 
+        {
+            case "ABILITYPHASE":
+                break;
+
+            case "SUMMONPHASE":
+                //Summon them!
+                battleSystem.StartCoroutine("SummonCards");
+                break;
+
+            case "BUFFPHASE":
+                //Wait for the player to choose a card
+                break;
+        }
+
     }
 }

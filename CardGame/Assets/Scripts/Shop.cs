@@ -15,9 +15,9 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FoaJoey.GetComponent<CardDisplay>().card = buyableCards.Find(x => x.cardName == "Foa Joey!");
+        FoaJoey.GetComponent<CardDisplay>().card = buyableCards.Find(x => x.cardName == "Foa_Joey");
         FoaJoey.GetComponent<CardDisplay>().statsText.text = "Ability";
-        FoaJoey.GetComponent<CardDisplay>().artWork.sprite = buyableCards.Find(x => x.cardName == "Foa Joey!").artWork;
+        FoaJoey.GetComponent<CardDisplay>().artWork.sprite = buyableCards.Find(x => x.cardName == "Foa_Joey").artWork;
 
         FoaJoeyCard = FoaJoey.GetComponent<CardDisplay>().card;
 
@@ -33,7 +33,7 @@ public class Shop : MonoBehaviour
 
     public void BuyLevel2()
     {
-        if(PlayerInfo.playerLevel > 1)
+        if(PlayerInfo.playerLevel >= 0)
         {
             if (!PlayerInfo.playerCardInventory.ContainsKey(FoaJoeyCard))
                 PlayerInfo.playerCardInventory.Add(FoaJoeyCard, 4); 
