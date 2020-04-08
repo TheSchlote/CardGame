@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - Abilities
     - ArenaManager
     - BattleSystem
     - Card
@@ -13,7 +14,7 @@ ScriptsOnlyBuild:
     - MainScreen
     - PlayerInfo
     - PopulateAvailableCards
-    - StartGame
+    - Shop
     - StartUp
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
@@ -24,8 +25,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -99,68 +102,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11234}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 11594}
-    - Class: 115
-      Script: {instanceID: 0}
-    - Class: 128
-      Script: {instanceID: 0}
-    - Class: 157
-      Script: {instanceID: 0}
-    - Class: 213
-      Script: {instanceID: 0}
-    - Class: 222
-      Script: {instanceID: 0}
-    - Class: 223
-      Script: {instanceID: 0}
-    - Class: 224
-      Script: {instanceID: 0}
-    Assets/Scenes/GameStart.unity:
-    - Class: 1
-      Script: {instanceID: 0}
-    - Class: 4
-      Script: {instanceID: 0}
-    - Class: 20
-      Script: {instanceID: 0}
-    - Class: 21
-      Script: {instanceID: 0}
-    - Class: 28
-      Script: {instanceID: 0}
-    - Class: 48
-      Script: {instanceID: 0}
-    - Class: 81
-      Script: {instanceID: 0}
-    - Class: 104
-      Script: {instanceID: 0}
-    - Class: 114
-      Script: {instanceID: 9678}
-    - Class: 114
-      Script: {instanceID: 9844}
-    - Class: 114
-      Script: {instanceID: 9884}
-    - Class: 114
-      Script: {instanceID: 10102}
-    - Class: 114
-      Script: {instanceID: 10300}
-    - Class: 114
-      Script: {instanceID: 10626}
-    - Class: 114
-      Script: {instanceID: 10678}
-    - Class: 114
-      Script: {instanceID: 10696}
-    - Class: 114
-      Script: {instanceID: 11184}
-    - Class: 114
-      Script: {instanceID: 11234}
-    - Class: 114
-      Script: {instanceID: 11564}
-    - Class: 114
-      Script: {instanceID: 57670}
+      Script: {instanceID: 11598}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -213,13 +161,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11234}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 11600}
+      Script: {instanceID: 11604}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -264,21 +212,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9884}
     - Class: 114
+      Script: {instanceID: 10022}
+    - Class: 114
       Script: {instanceID: 10102}
     - Class: 114
       Script: {instanceID: 10300}
     - Class: 114
       Script: {instanceID: 10626}
     - Class: 114
-      Script: {instanceID: 10918}
+      Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11350}
+      Script: {instanceID: 11226}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 11594}
+      Script: {instanceID: 11598}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -329,15 +279,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 10892}
+      Script: {instanceID: 10894}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11234}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11530}
+      Script: {instanceID: 11534}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11568}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -388,6 +338,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10300}
     - Class: 114
+      Script: {instanceID: 10342}
+    - Class: 114
       Script: {instanceID: 10626}
     - Class: 114
       Script: {instanceID: 10678}
@@ -396,19 +348,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10874}
     - Class: 114
-      Script: {instanceID: 10918}
+      Script: {instanceID: 10920}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11234}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11350}
+      Script: {instanceID: 11354}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 11580}
+      Script: {instanceID: 11584}
     - Class: 114
-      Script: {instanceID: 11594}
+      Script: {instanceID: 11598}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -576,7 +528,7 @@ ScriptsOnlyBuild:
     className: RectMask2D
   - hash:
       serializedVersion: 2
-      Hash: f406035904c1cb50d6e4717728f034eb
+      Hash: 2d77beac59812690ebb174ca2f38321c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Card
@@ -606,7 +558,7 @@ ScriptsOnlyBuild:
     className: Shadow
   - hash:
       serializedVersion: 2
-      Hash: bb61080a166c6e27d29f8ca8dfc06ddd
+      Hash: 4ced1120104319f2b207f209f45bb181
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainScreen
@@ -636,7 +588,7 @@ ScriptsOnlyBuild:
     className: ControlTrack
   - hash:
       serializedVersion: 2
-      Hash: 5e295ede12cc2326c7943fd2a6cec925
+      Hash: c17402df9cfb3b540f7966ddab1dd7b0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Abilities
@@ -696,7 +648,7 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
-      Hash: 474589d27375b5aed58febdb65e933bb
+      Hash: 982c762803537ab1084405131bebea54
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Deck
@@ -726,7 +678,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: aae8b15f0599696eefa3d0fa19e31eaf
+      Hash: f80c09b3b15f02c0cf626f13e2de9607
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BattleSystem
@@ -802,6 +754,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
     className: BeforeAfterTestCommandState
+  - hash:
+      serializedVersion: 2
+      Hash: 3900ef2470ae87c4cce0173a0cc0d00a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Shop
   - hash:
       serializedVersion: 2
       Hash: ada95a0ff21adb86d88abc5cea273859
@@ -900,7 +858,7 @@ ScriptsOnlyBuild:
     className: SignalEmitter
   - hash:
       serializedVersion: 2
-      Hash: 4f343719ca1576ed7415a6d72069ba13
+      Hash: dc0a534355341e4590ea692e5ac7edc6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CardDisplay
@@ -922,15 +880,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: e864b44673d5c64e91c8d3d5fa74ffe7
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: StartGame
   platform: 13
   scenePathNames:
-  - Assets/Scenes/GameStart.unity
   - Assets/Scenes/StartupScene.unity
   - Assets/Scenes/Main.unity
   - Assets/Scenes/DeckBuilder.unity

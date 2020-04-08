@@ -33,7 +33,7 @@ public class Shop : MonoBehaviour
 
     public void BuyLevel2()
     {
-        if(PlayerInfo.playerLevel >= 0)
+        if(PlayerInfo.playerLevel >= 2)
         {
             if (!PlayerInfo.playerCardInventory.ContainsKey(FoaJoeyCard))
                 PlayerInfo.playerCardInventory.Add(FoaJoeyCard, 4); 

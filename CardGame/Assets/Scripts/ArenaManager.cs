@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +17,6 @@ public class ArenaManager : MonoBehaviour
     public Text txttotalEnemyCardsInDeck;
     public Text txttotalEnemyCardsInHand;
     public Text txttotalEnemyCardsInDiscard;
-
 
     public Text txttotalNickPoints;
     public Text txttotalJoeyPoints;
@@ -53,7 +51,6 @@ public class ArenaManager : MonoBehaviour
     public static int totalEnemyCardsInHand;
     public static int totalEnemyCardsInDiscard;
 
-
     public static int totalNickPoints;
     public static int totalJoeyPoints;
     public static int totalJordanPoints;
@@ -63,11 +60,10 @@ public class ArenaManager : MonoBehaviour
     public static int totalCardsInHand;
     public static int totalCardsInDiscard;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    public static Dictionary<int, Card> playerFieldCards = new Dictionary<int, Card>();
+    public static Dictionary<int, Card> playerTrashCards = new Dictionary<int, Card>();
+    public static Dictionary<int, Card> enemyFieldCards = new Dictionary<int, Card>();
+    public static Dictionary<int, Card> enemyTrashCards = new Dictionary<int, Card>();
 
     // Update is called once per frame
     void Update()
@@ -130,6 +126,11 @@ public class ArenaManager : MonoBehaviour
         totalCardsInDeck = 0;
         totalCardsInHand = 0;
         totalCardsInDiscard = 0;
+
+        playerFieldCards.Clear();
+        playerTrashCards.Clear();
+        enemyFieldCards.Clear();
+        enemyTrashCards.Clear();
     }
     public void ResetArenaPoints()
     {

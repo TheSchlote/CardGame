@@ -104,7 +104,6 @@ public class PopulateAvailableCards : MonoBehaviour
             MyDeck.AddCardToDeck(currentCard);
             PlayerInfo.playerCardInventory[currentCard]--;
             UpdateAvailableCardsGrid();
-            //Debug.Log(currentCard + " Added to Deck. There are now " + Deck.deck.Count + " Cards in My Deck");
             PopulateDeckGrid(currentCard);   
         }
         else

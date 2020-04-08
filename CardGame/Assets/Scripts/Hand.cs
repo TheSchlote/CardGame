@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.Linq;
 
 public class Hand : MonoBehaviour
@@ -14,18 +12,6 @@ public class Hand : MonoBehaviour
     public static Dictionary<int, Card> enemyCardsToPlay = new Dictionary<int, Card>();
     public Transform HandGrid;
     public int cardIndex;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void SelectCard(KeyValuePair<int, Card> selectedcard)
     {

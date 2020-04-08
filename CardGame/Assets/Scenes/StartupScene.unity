@@ -158,7 +158,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 317139796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 562.4401, y: 389.83292, z: -410.125}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -202,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342313543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 624.5732, y: 368.12964, z: -66.09311}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1897,6 +1897,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a9ce3b4a99794874ab3022a3b959bdc1, type: 2}
   - {fileID: 11400000, guid: 88f021aa9887ef64ca2dcfed7c5e438a, type: 2}
   - {fileID: 11400000, guid: c69b5535ec3e047408757e65be2f8650, type: 2}
+  - {fileID: 11400000, guid: 68f8f0d63fd7f2d4f84afe518dfa4eb1, type: 2}
+  starterCards:
+  - {fileID: 11400000, guid: 04b577633b7691d488c37e3fa831b933, type: 2}
+  - {fileID: 11400000, guid: d522c14f1f1c80447831b6996d6dfdfa, type: 2}
+  - {fileID: 11400000, guid: a9ce3b4a99794874ab3022a3b959bdc1, type: 2}
+  - {fileID: 11400000, guid: 88f021aa9887ef64ca2dcfed7c5e438a, type: 2}
+  - {fileID: 11400000, guid: c69b5535ec3e047408757e65be2f8650, type: 2}
   numberOfCardsinDeck: 0
 --- !u!4 &2142922032
 Transform:
@@ -1906,7 +1913,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2142922030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 624.5732, y: 368.12964, z: -66.09311}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -129,13 +129,15 @@ public class BattleSystem : MonoBehaviour
         foreach (KeyValuePair<int, Card> card in Hand.cardsToPlay)
         {
             playerPrefab.GetComponent<CardDisplay>().card = card.Value;
+            playerPrefab.GetComponent<CardDisplay>().cardKey = card.Key;
             //I think this will work it will just fill the cards backwards?
             yield return new WaitForSeconds(1f);
 
             gameObjects[cardSlot] = Instantiate(playerPrefab, playerBattleStation);
-            gameObjects[cardSlot].GetComponent<Button>().onClick.AddListener(delegate { ability.SelectCardOnField(card.Value); });
+            gameObjects[cardSlot].GetComponent<Button>().onClick.AddListener(delegate { ability.SelectCardOnField(card); });
             ArenaManager.totalCardsInHand--;
             cardSlot--;
+            ArenaManager.playerFieldCards.Add(card.Key, card.Value);
         }
         //Just want to make sure this is accurate
         ArenaManager.totalCardsInHand = Hand.hand.Count;
@@ -151,12 +153,13 @@ public class BattleSystem : MonoBehaviour
         foreach (KeyValuePair<int, Card> card in Hand.enemyCardsToPlay)
         {
             enemyPrefab.GetComponent<CardDisplay>().card = card.Value;
+            enemyPrefab.GetComponent<CardDisplay>().cardKey = card.Key;
             //I think this will work it will just fill the cards backwards?
             yield return new WaitForSeconds(1f);
             enemyGameObjects[badGuySlot] = Instantiate(enemyPrefab, enemyBattleStation);
             ArenaManager.totalEnemyCardsInHand--;
             badGuySlot--;
-
+            ArenaManager.enemyFieldCards.Add(card.Key, card.Value);
         }
         ArenaManager.totalEnemyCardsInHand = Hand.enemyHand.Count();
         Hand.enemyCardsToPlay.Clear();
@@ -460,6 +463,16 @@ public class BattleSystem : MonoBehaviour
         ArenaManager.totalCardsInDiscard += Hand.hand.Count();
         Hand.hand.Clear();
         Hand.cardsToPlay.Clear();
+        foreach(KeyValuePair<int, Card> card in ArenaManager.playerFieldCards)
+        {
+            ArenaManager.playerTrashCards.Add(card.Key, card.Value);
+        }
+        foreach (KeyValuePair<int, Card> card in ArenaManager.enemyFieldCards)
+        {
+            ArenaManager.enemyTrashCards.Add(card.Key, card.Value);
+        }
+        ArenaManager.playerFieldCards.Clear();
+        ArenaManager.enemyFieldCards.Clear();
         foreach ( Transform child in playerBattleStation.transform)
         {
             Destroy(child.gameObject);

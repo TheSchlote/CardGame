@@ -8,18 +8,22 @@ public class Abilities : MonoBehaviour
 {
     public BattleSystem battleSystem;
 
-    Card currentCard;
+    KeyValuePair<int, Card> currentCard;
     private int cardIndex;
-    //Name of the corutine is the name of the card
+    //Name of the coroutine is the name of the card
 
     public IEnumerator Foa_Joey()
     {
         for (int i = 0; i < battleSystem.playerBattleStation.childCount; i++)
         {
-            if(battleSystem.playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card = currentCard)
+            if(battleSystem.playerBattleStation.GetChild(i).GetComponent<CardDisplay>().card == currentCard.Value)
             {
-                cardIndex = i;
-                break;
+                if (battleSystem.playerBattleStation.GetChild(i).GetComponent<CardDisplay>().cardKey == currentCard.Key)
+                {
+                    cardIndex = i;
+                    break;
+                }
+
             }
         }
         int cardATK = Convert.ToInt32(battleSystem.playerBattleStation.GetChild(cardIndex).GetComponent<CardDisplay>().statsText.text.ToString().Split('/')[0]);
@@ -34,7 +38,7 @@ public class Abilities : MonoBehaviour
         battleSystem.BuffPhase();
     }
 
-    public void SelectCardOnField(Card card)
+    public void SelectCardOnField(KeyValuePair<int, Card> card)
     {
         if (battleSystem.state.ToString() == "BUFFPHASE")
         {

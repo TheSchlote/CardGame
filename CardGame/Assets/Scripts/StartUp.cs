@@ -30,7 +30,16 @@ public class StartUp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Try to load a game
+        try
+        {
+            player.LoadGameData();
+            SceneManager.LoadScene("Main");
+        }
+        catch
+        {
+            //If we couldnt load a game then we must have to start over
+        }
     }
 
     public void OpenKeyboard()

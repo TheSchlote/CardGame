@@ -99,7 +99,6 @@
     <Compile Include="Assets\Scripts\PlayerInfo.cs" />
     <Compile Include="Assets\Scripts\PopulateAvailableCards.cs" />
     <Compile Include="Assets\Scripts\Shop.cs" />
-    <Compile Include="Assets\Scripts\StartGame.cs" />
     <Compile Include="Assets\Scripts\StartUp.cs" />
     <None Include="Assets\QuickSave\readme.txt" />
     <None Include="Assets\QuickSave\Plugins\JsonDotNet\link.xml" />

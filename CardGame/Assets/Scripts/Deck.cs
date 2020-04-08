@@ -10,7 +10,7 @@ public class Deck : MonoBehaviour
     public static Dictionary<int, Card> deck = new Dictionary<int, Card>();
     //A list of everyCard available
     public List<Card> cards = new List<Card>();
-
+    public List<Card> starterCards = new List<Card>();
     public int  numberOfCardsinDeck = deck.Count;
 
     //This may need to be its own scrip. but for now this works.

@@ -9,6 +9,8 @@ public class CardDisplay : MonoBehaviour
 
     public Image artWork;
     public Text statsText;
+    //I think we can use this to keep track of which card is which.
+    public int cardKey;
 
     // Start is called before the first frame update
     void Start()

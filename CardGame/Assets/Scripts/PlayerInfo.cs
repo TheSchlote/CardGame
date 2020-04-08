@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using CI.QuickSave;
 
 public class PlayerInfo : MonoBehaviour
@@ -21,14 +18,7 @@ public class PlayerInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         playerXPToNextLevel = experienceNeededToLevelUp[playerLevel];
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void AddExperience(int amount)
@@ -36,11 +26,7 @@ public class PlayerInfo : MonoBehaviour
         playerXP += amount;
         if (playerXP >= playerXPToNextLevel)
         {
-            if (playerLevel >= experienceNeededToLevelUp.Length - 1)
-            {
-                //Debug.Log("Max Level Reached!");
-            }
-            else
+            if (playerLevel < experienceNeededToLevelUp.Length - 1)
             {
                 //Enough XP to level up
                 playerLevel++;
@@ -49,15 +35,14 @@ public class PlayerInfo : MonoBehaviour
                 playerXPToNextLevel = experienceNeededToLevelUp[playerLevel];
             }
         }
-        //Debug.Log(playerXPToNextLevel);
     }
 
     public void AddStartingCards()
     {
-        //Testing I want to add five of each card.
-        foreach (Card card in myDeck.cards)
+        //Add five of each card.
+        foreach (Card card in myDeck.starterCards)
         {
-            playerCardInventory.Add(card, 5);
+            playerCardInventory.Add(card, 4);
         }
     }
 
@@ -87,7 +72,6 @@ public class PlayerInfo : MonoBehaviour
                            .Write("PlayerCardInventory", playerCardInventoryFake)
                            .Write("PlayerDeck", deckFakeList)
                            .Commit();
-        //Debug.Log("Saved!");
     }
 
     public void SaveNewGameData()
@@ -123,14 +107,16 @@ public class PlayerInfo : MonoBehaviour
         //So i fix that here
         foreach (KeyValuePair<string, int> card in playerCardInventoryFake)
         {
+            Card card1 = myDeck.cards.Find(x => x.name == card.Key);
 
-            playerCardInventory.Add(myDeck.cards.Find(x => x.name == card.Key), card.Value);
+            playerCardInventory.Add(card1, card.Value);
         }
         //Reassigning Deck index numbers just makes everything easier.
         int i = 0;
         foreach (string card in deckFakeList)
         {
-            Deck.deck.Add(i, myDeck.cards.Find(x => x.name == card));
+            Card card1 = myDeck.cards.Find(x => x.name == card);
+            Deck.deck.Add(i, card1);
             i++;
         }
     }
