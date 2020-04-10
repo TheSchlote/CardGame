@@ -25,10 +25,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -102,13 +100,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11184}
     - Class: 114
-      Script: {instanceID: 11238}
+      Script: {instanceID: 11236}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11598}
+      Script: {instanceID: 11596}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -161,13 +159,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11184}
     - Class: 114
-      Script: {instanceID: 11238}
+      Script: {instanceID: 11236}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11604}
+      Script: {instanceID: 11602}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -222,13 +220,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11184}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11224}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11598}
+      Script: {instanceID: 11596}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -279,15 +277,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 10894}
+      Script: {instanceID: 10892}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11184}
     - Class: 114
-      Script: {instanceID: 11238}
+      Script: {instanceID: 11236}
     - Class: 114
-      Script: {instanceID: 11534}
+      Script: {instanceID: 11532}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11566}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -348,19 +346,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10874}
     - Class: 114
-      Script: {instanceID: 10920}
+      Script: {instanceID: 10918}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11184}
     - Class: 114
-      Script: {instanceID: 11238}
+      Script: {instanceID: 11236}
     - Class: 114
-      Script: {instanceID: 11354}
+      Script: {instanceID: 11352}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11584}
+      Script: {instanceID: 11582}
     - Class: 114
-      Script: {instanceID: 11598}
+      Script: {instanceID: 11596}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -887,4 +885,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/DeckBuilder.unity
   - Assets/Scenes/TestBattleScene.unity
   - Assets/Scenes/ShopScene.unity
-  playerPath: C:/Unity/Builds/CardGameTest.apk
+  playerPath: C:/Unity/Builds/BundledFirstBuild.aab
